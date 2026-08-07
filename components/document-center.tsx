@@ -1,0 +1,571 @@
+"use client"
+
+import { useState, useEffect } from "react"
+import { toast, Toaster } from "sonner"
+import { FolderDown, Download, HardDrive, Loader2 } from "lucide-react"
+import { cn } from "@/lib/utils"
+
+type IconProps = { className?: string }
+
+// Word：带 W 标识的单页文档轮廓图标
+function WordIcon({ className }: IconProps) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={1.5}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+      aria-hidden="true"
+    >
+      <path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z" />
+      <path d="M14 3v5h5" />
+      <text
+        x="12"
+        y="17.5"
+        fontSize="6.5"
+        fontWeight="700"
+        textAnchor="middle"
+        fill="currentColor"
+        stroke="none"
+      >
+        W
+      </text>
+    </svg>
+  )
+}
+
+// Excel：带表格横线的表格文档轮廓图标
+function ExcelIcon({ className }: IconProps) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={1.5}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+      aria-hidden="true"
+    >
+      <path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z" />
+      <path d="M14 3v5h5" />
+      <path d="M8 12.5h8" />
+      <path d="M8 15.5h8" />
+      <path d="M8 18h8" />
+      <path d="M12 12v6.5" />
+    </svg>
+  )
+}
+
+// PDF：双层书页，中间印有 PDF 字样轮廓图标
+function PdfIcon({ className }: IconProps) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={1.5}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+      aria-hidden="true"
+    >
+      {/* 后层书页 */}
+      <path d="M6 6H4.5A1.5 1.5 0 0 0 3 7.5v11A1.5 1.5 0 0 0 4.5 20H14a1.5 1.5 0 0 0 1.5-1.5V17" />
+      {/* 前层书页 */}
+      <path d="M15 3H8.5A1.5 1.5 0 0 0 7 4.5v11A1.5 1.5 0 0 0 8.5 17H18a1.5 1.5 0 0 0 1.5-1.5V7.5z" />
+      <path d="M15 3v4.5h4.5" />
+      <text
+        x="12.5"
+        y="13.5"
+        fontSize="4.2"
+        fontWeight="700"
+        textAnchor="middle"
+        fill="currentColor"
+        stroke="none"
+      >
+        PDF
+      </text>
+    </svg>
+  )
+}
+
+// ZIP：简约文档线条图标（带拉链）
+function ZipIcon({ className }: IconProps) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={1.5}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+      aria-hidden="true"
+    >
+      <path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z" />
+      <path d="M14 3v5h5" />
+      {/* 拉链 */}
+      <path d="M12 8.5v8" strokeDasharray="1.5 1.5" />
+      <rect x="10.75" y="16" width="2.5" height="3" rx="0.5" />
+    </svg>
+  )
+}
+
+// 把 "29.1 MB" / "271 KB" 这类文本解析为字节数，作为无 Content-Length 时的进度分母
+function parseSizeToBytes(size: string): number {
+  const match = size.trim().match(/^([\d.]+)\s*(KB|MB|GB|B)$/i)
+  if (!match) return 0
+  const value = Number.parseFloat(match[1])
+  const unit = match[2].toUpperCase()
+  const factor = unit === "GB" ? 1024 ** 3 : unit === "MB" ? 1024 ** 2 : unit === "KB" ? 1024 : 1
+  return Math.round(value * factor)
+}
+
+// 把字节数格式化为可读文本，如 34482014 → "32.9 MB"
+function formatBytes(bytes: number): string {
+  if (!bytes || bytes <= 0) return "—"
+  const units = ["B", "KB", "MB", "GB"]
+  let value = bytes
+  let i = 0
+  while (value >= 1024 && i < units.length - 1) {
+    value /= 1024
+    i++
+  }
+  return `${i === 0 ? Math.round(value) : value.toFixed(1)} ${units[i]}`
+}
+
+// 通过网络请求获取文件真实大小（字节），优先 HEAD，回退到 Range 请求
+async function fetchFileSize(url: string): Promise<number> {
+  try {
+    const head = await fetch(url, { method: "HEAD" })
+    const len = Number(head.headers.get("Content-Length"))
+    if (len > 0) return len
+  } catch {
+    // 忽略，继续尝试 Range 请求
+  }
+  try {
+    const res = await fetch(url, { headers: { Range: "bytes=0-0" } })
+    const contentRange = res.headers.get("Content-Range") // 形如 "bytes 0-0/34482014"
+    if (contentRange && contentRange.includes("/")) {
+      const total = Number(contentRange.split("/")[1])
+      if (total > 0) return total
+    }
+    const len = Number(res.headers.get("Content-Length"))
+    if (len > 0) return len
+  } catch {
+    // 忽略
+  }
+  return 0
+}
+
+// 判断当前是否以本地文件方式打开（双击 index.html）
+function useIsFileProtocol() {
+  const [isFile, setIsFile] = useState(false)
+  useEffect(() => {
+    setIsFile(window.location.protocol === "file:")
+  }, [])
+  return isFile
+}
+
+// 下载中的 toast，带转圈图标和进度条
+function DownloadToast({ name, percent }: { name: string; percent: number | null }) {
+  const showBar = percent !== null
+  return (
+    <div className="flex w-[356px] flex-col gap-2 rounded-lg border border-border bg-background p-4 shadow-lg">
+      <div className="flex items-center gap-2.5">
+        <Loader2 className="h-4 w-4 shrink-0 animate-spin text-[#0ab2bd]" />
+        <span className="flex-1 truncate text-sm font-medium text-foreground">
+          正在下载：{name}
+        </span>
+        {showBar && (
+          <span className="shrink-0 text-xs font-semibold text-[#0ab2bd]">{percent}%</span>
+        )}
+      </div>
+      <div className="h-1.5 w-full overflow-hidden rounded-full bg-muted">
+        <div
+          className={cn(
+            "h-full rounded-full bg-[#0ab2bd] transition-all duration-200",
+            !showBar && "w-1/3 animate-pulse"
+          )}
+          style={showBar ? { width: `${percent}%` } : undefined}
+        />
+      </div>
+    </div>
+  )
+}
+
+type FileType = "word" | "excel" | "pdf" | "zip"
+
+interface DocItem {
+  id: string
+  type: FileType
+  name: string
+  description: string
+  size: string
+  file: string
+  downloadName: string
+  category: "device" | "semi" | "full"
+}
+
+const typeConfig: Record<
+  FileType,
+  { label: string; icon: (props: IconProps) => JSX.Element; color: string; tagBg: string; iconBg: string }
+> = {
+  // 淡灰蓝
+  word: {
+    label: "DOCX",
+    icon: WordIcon,
+    color: "text-[#6b7f99]",
+    tagBg: "bg-[#eef1f5] text-[#6b7f99]",
+    iconBg: "bg-[#eef1f5]",
+  },
+  // 灰绿
+  excel: {
+    label: "XLSX",
+    icon: ExcelIcon,
+    color: "text-[#6f8f6b]",
+    tagBg: "bg-[#eef3ed] text-[#6f8f6b]",
+    iconBg: "bg-[#eef3ed]",
+  },
+  // 砖棕
+  pdf: {
+    label: "PDF",
+    icon: PdfIcon,
+    color: "text-[#9c6b5a]",
+    tagBg: "bg-[#f4ece9] text-[#9c6b5a]",
+    iconBg: "bg-[#f4ece9]",
+  },
+  // 土橙
+  zip: {
+    label: "ZIP",
+    icon: ZipIcon,
+    color: "text-[#b78a53]",
+    tagBg: "bg-[#f6f0e6] text-[#b78a53]",
+    iconBg: "bg-[#f6f0e6]",
+  },
+}
+
+interface DocumentCenterProps {
+  basePath?: string
+}
+
+export function DocumentCenter({ basePath = "./" }: DocumentCenterProps) {
+  const [activeTab, setActiveTab] = useState<"all" | "device" | "semi" | "full">("all")
+  const isFile = useIsFileProtocol()
+  // 前端实时获取的文件大小（服务器替换文件后会自动跟随变化）
+  const [sizes, setSizes] = useState<Record<string, string>>({})
+
+  // 本地文件方式打开时用相对路径，http 环境（预览/部署）用绝对路径
+  const docPath = (name: string) => (isFile ? `${basePath}docs/${name}` : `/docs/${name}`)
+
+  const documents: DocItem[] = [
+    {
+      id: "excel",
+      type: "excel",
+      name: "商捷进件表-x台-20xx年xx月xx日",
+      description: "设备在进行激活绑定前需要填写的表格，填写并修改文件名后提交给销售处理",
+      size: "11.3 KB",
+      file: docPath("jianjian-form.xlsx"),
+      downloadName: "商捷进件表-x台-20xx年xx月xx日.xlsx",
+      category: "device",
+    },
+    {
+      id: "driver",
+      type: "zip",
+      name: "电脑驱动",
+      description: "下载后在电脑上安装，需根据不同数据线安装不同的驱动，详细见“驱动安装说明”",
+      size: "13.9 MB",
+      file: docPath("driver.zip"),
+      downloadName: "电脑驱动.zip",
+      category: "semi",
+    },
+    {
+      id: "dll-test-tool",
+      type: "zip",
+      name: "动态库测试工具",
+      description: "下载后用电脑测试是否能唤起设备刷脸，能唤起设备刷脸说明连接成功",
+      size: "8.3 MB",
+      file: docPath("dll-test-tool.zip"),
+      downloadName: "动态库测试工具.zip",
+      category: "semi",
+    },
+    {
+      id: "dll-32",
+      type: "zip",
+      name: "动态库-32位",
+      description: "用于替换医院现有HIS系统（32位）中的动态库文件，动态库版本1.1.9",
+      size: "32.9 MB",
+      file: docPath("dll-32.zip"),
+      downloadName: "动态库-32位.zip",
+      category: "semi",
+    },
+    {
+      id: "dll-64",
+      type: "zip",
+      name: "动态库-64位",
+      description: "用于替换医院现有HIS系统（64位）中的动态库文件，动态库版本1.1.9",
+      size: "10.1 MB",
+      file: docPath("dll-64.zip"),
+      downloadName: "动态库-64位.zip",
+      category: "semi",
+    },
+    {
+      id: "dll-runtime",
+      type: "zip",
+      name: "动态库运行环境（可选）",
+      description: "VC环境和串口驱动选装",
+      size: "17.4 MB",
+      file: docPath("dll-runtime.zip"),
+      downloadName: "动态库运行环境（可选）.zip",
+      category: "semi",
+    },
+    {
+      id: "his-dll-doc",
+      type: "zip",
+      name: "HIS改造和动态库相关文档",
+      description: "正式环境下的HIS调用，标准化HIS改造和动态库部署文档",
+      size: "2.7 MB",
+      file: docPath("his-dll-doc.zip"),
+      downloadName: "HIS改造和动态库相关文档.zip",
+      category: "semi",
+    },
+    {
+      id: "terminal3-api",
+      type: "pdf",
+      name: "终端3.0标准化接口文档_20250403",
+      description: "以H5方式接入主应用的SDK标准化接口文档，提供刷脸激活电子凭证等基础功能",
+      size: "2.2 MB",
+      file: docPath("terminal3-api.pdf"),
+      downloadName: "终端3.0标准化接口文档_20250403.pdf",
+      category: "full",
+    },
+    {
+      id: "alipay-iot-manual",
+      type: "pdf",
+      name: "支付宝医疗IOT开放平台操作手册",
+      description: "服务商（ISV）注册、项目备案、H5链接挂载的标准操作教程",
+      size: "6.3 MB",
+      file: docPath("alipay-iot-manual.pdf"),
+      downloadName: "支付宝医疗IOT开放平台操作手册.pdf",
+      category: "full",
+    },
+    {
+      id: "h5-demo",
+      type: "zip",
+      name: "二开H5示例",
+      description: "二开H5示例代码包，其中init方法中的ISV信息需要替换为已注册的ISV信息",
+      size: "271 KB",
+      file: docPath("h5-demo.zip"),
+      downloadName: "二开H5示例.zip",
+      category: "full",
+    },
+    {
+      id: "menu-mount-template",
+      type: "excel",
+      name: "二开菜单申请挂载模板",
+      description: "挂载H5链接需要下载该表格并填写信息，最后提交到支付宝开放平台",
+      size: "10.6 KB",
+      file: docPath("menu-mount-template.xlsx"),
+      downloadName: "二开菜单申请挂载模板.xlsx",
+      category: "full",
+    },
+  ]
+
+  // 挂载后（及协议变化后）实时获取每个文件的真实大小
+  useEffect(() => {
+    let cancelled = false
+    Promise.all(
+      documents.map(async (doc) => {
+        const bytes = await fetchFileSize(doc.file)
+        return [doc.id, bytes > 0 ? formatBytes(bytes) : doc.size] as const
+      })
+    ).then((entries) => {
+      if (!cancelled) setSizes(Object.fromEntries(entries))
+    })
+    return () => {
+      cancelled = true
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isFile])
+
+  const tabs = [
+    { key: "all" as const, label: "全部" },
+    { key: "device" as const, label: "设备实施" },
+    { key: "semi" as const, label: "半自助" },
+    { key: "full" as const, label: "全自助（二次开发）" },
+  ]
+
+  const visibleDocs =
+    activeTab === "all" ? documents : documents.filter((d) => d.category === activeTab)
+
+  const handleDownload = async (doc: DocItem) => {
+    const toastId = `download-${doc.id}`
+
+    // 渲染带进度条的下载中 toast
+    const renderProgress = (percent: number | null) =>
+      toast.custom(
+        () => <DownloadToast name={doc.name} percent={percent} />,
+        { id: toastId, duration: Number.POSITIVE_INFINITY }
+      )
+
+    renderProgress(0)
+
+    try {
+      // 用 fetch 把文件抓成 blob，再用程序触发下载，避免页面在 iframe 中跳转
+      const res = await fetch(doc.file)
+      if (!res.ok) throw new Error(`HTTP ${res.status}`)
+
+      // 优先用响应头的 Content-Length，缺失时回退到已获取的真实大小，保证能算出真实百分比
+      const total =
+        Number(res.headers.get("Content-Length")) || parseSizeToBytes(sizes[doc.id] ?? doc.size)
+      let blob: Blob
+
+      if (res.body) {
+        // 流式读取，实时更新进度
+        const reader = res.body.getReader()
+        const chunks: Uint8Array[] = []
+        let received = 0
+
+        while (true) {
+          const { done, value } = await reader.read()
+          if (done) break
+          if (value) {
+            chunks.push(value)
+            received += value.length
+            if (total > 0) {
+              // 下载中最多显示到 99%，完成后再置 100%，避免提前满格
+              renderProgress(Math.min(99, Math.floor((received / total) * 100)))
+            } else {
+              renderProgress(null)
+            }
+          }
+        }
+        blob = new Blob(chunks as BlobPart[])
+        renderProgress(100)
+      } else {
+        // 极少数环境不支持流式读取时，退化为整体读取
+        renderProgress(null)
+        blob = await res.blob()
+      }
+
+      const blobUrl = URL.createObjectURL(blob)
+      const link = document.createElement("a")
+      link.href = blobUrl
+      link.download = doc.downloadName
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+
+      // 释放 blob 链接
+      URL.revokeObjectURL(blobUrl)
+
+      // 先关闭进度条 toast，再弹出成功提示，确保成功提示可靠显示
+      toast.dismiss(toastId)
+      toast.success("下载成功！", { duration: 3000 })
+    } catch (err) {
+      console.log("[v0] download error:", err)
+      toast.dismiss(toastId)
+      toast.error("下载失败，请稍后重试", { duration: 3000 })
+    }
+  }
+
+  return (
+    <div className="container mx-auto px-4 py-12">
+      {/* 顶部标题区 */}
+      <div className="flex flex-col items-center text-center mb-10">
+        <div className="w-16 h-16 rounded-2xl bg-[#0ab2bd]/10 flex items-center justify-center mb-4">
+          <FolderDown className="w-8 h-8 text-[#0ab2bd]" />
+        </div>
+        <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4 text-balance">文档下载中心</h1>
+        <p className="max-w-2xl text-base md:text-lg text-muted-foreground leading-relaxed text-pretty">
+          提供产品实施相关文档资源，方便您查阅和使用。所有文档均经过安全扫描，请放心下载。
+        </p>
+      </div>
+
+      {/* 分类按钮 */}
+      <div className="flex items-center justify-center gap-3 mb-10">
+        {tabs.map((tab) => (
+          <button
+            key={tab.key}
+            onClick={() => setActiveTab(tab.key)}
+            className={cn(
+              "rounded-full px-8 py-2.5 text-base font-medium transition-all border",
+              activeTab === tab.key
+                ? "bg-[#0ab2bd] text-white border-[#0ab2bd] shadow-md"
+                : "bg-background text-foreground/70 border-border hover:border-[#0ab2bd] hover:text-[#0ab2bd]"
+            )}
+          >
+            {tab.label}
+          </button>
+        ))}
+      </div>
+
+      {/* 文档卡片网格 */}
+      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 max-w-6xl mx-auto">
+        {visibleDocs.map((doc) => {
+          const config = typeConfig[doc.type]
+          const Icon = config.icon
+          return (
+            <div
+              key={doc.id}
+              className="flex flex-col rounded-xl border border-border bg-background p-4 transition-all hover:shadow-lg"
+            >
+              {/* 右上角类型小标签 */}
+              <div className="flex justify-end mb-3">
+                <span
+                  className={cn(
+                    "inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium",
+                    config.tagBg
+                  )}
+                >
+                  {config.label}
+                </span>
+              </div>
+
+              {/* 文档类型图标 */}
+              <div
+                className={cn(
+                  "flex h-20 w-20 items-center justify-center rounded-xl mb-3",
+                  config.iconBg
+                )}
+              >
+                <Icon className={cn("h-11 w-11", config.color)} />
+              </div>
+
+              {/* 文档名 */}
+              <h3 className="text-base font-bold text-foreground mb-1.5 break-words leading-snug">
+                {doc.name}
+              </h3>
+
+              {/* 文档简介 */}
+              <p className="text-xs text-muted-foreground leading-relaxed mb-3 flex-1">
+                {doc.description}
+              </p>
+
+              {/* 文件大小（前端实时获取，服务器替换文件后自动更新） */}
+              <div className="flex items-center gap-1.5 text-xs text-muted-foreground mb-4">
+                <HardDrive className="w-3.5 h-3.5" />
+                <span>{sizes[doc.id] ?? "获取中…"}</span>
+              </div>
+
+              {/* 下载按钮 */}
+              <button
+                onClick={() => handleDownload(doc)}
+                className="inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-sm font-medium text-white bg-[#0ab2bd] hover:bg-[#089aa3] transition-colors"
+              >
+                <Download className="w-4 h-4" />
+                下载文档
+              </button>
+            </div>
+          )
+        })}
+      </div>
+
+      <Toaster position="bottom-right" richColors />
+    </div>
+  )
+}

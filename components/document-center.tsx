@@ -348,7 +348,7 @@ export function DocumentCenter({ basePath = "./" }: DocumentCenterProps) {
       type: "pdf",
       name: "支付宝医疗IOT开放平台操作手册",
       description: "服务商（ISV）注册、项目备案、H5链接挂载的标准操作教程",
-      size: "6.3 MB",
+      size: "6.0 MB",
       file: docPath("alipay-iot-manual.pdf"),
       downloadName: "支付宝医疗IOT开放平台操作手册.pdf",
       category: "full",
@@ -358,7 +358,7 @@ export function DocumentCenter({ basePath = "./" }: DocumentCenterProps) {
       type: "zip",
       name: "二开H5示例",
       description: "二开H5示例代码包，其中init方法中的ISV信息需要替换为已注册的ISV信息",
-      size: "271 KB",
+      size: "276.5 KB",
       file: docPath("h5-demo.zip"),
       downloadName: "二开H5示例.zip",
       category: "full",
@@ -486,7 +486,7 @@ export function DocumentCenter({ basePath = "./" }: DocumentCenterProps) {
         </p>
       </div>
 
-      {/* 分类按钮 */}
+      {/* 分���按钮 */}
       <div className="flex items-center justify-center gap-3 mb-10">
         {tabs.map((tab) => (
           <button

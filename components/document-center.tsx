@@ -369,7 +369,7 @@ export function DocumentCenter({ basePath = "./" }: DocumentCenterProps) {
       {activeTab === "brochure" ? (
         <div className="max-w-6xl mx-auto">
           {/* 汇总下载大卡片：左中右三栏，中间标题绝对居中 */}
-          <div className="relative mb-8 flex flex-col gap-6 rounded-2xl border border-border bg-background p-6 shadow-sm md:flex-row md:items-center md:justify-between md:gap-8 md:p-8">
+          <div className="relative mb-8 flex flex-col gap-6 rounded-2xl border border-border bg-background p-6 shadow-sm md:flex-row md:items-end md:justify-between md:gap-8 md:px-8 md:pb-6 md:pt-16">
             {/* 左栏：图标 + 标题 + 说明 */}
             <div className="flex items-start gap-4">
               <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-[#0ab2bd]/10">

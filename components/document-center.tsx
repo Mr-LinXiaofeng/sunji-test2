@@ -368,34 +368,36 @@ export function DocumentCenter({ basePath = "./" }: DocumentCenterProps) {
 
       {activeTab === "brochure" ? (
         <div className="max-w-6xl mx-auto">
-          {/* 汇总下载大卡片：通栏，左中右三栏 */}
-          <div className="mb-8 flex flex-col gap-6 rounded-2xl border border-border bg-background p-6 shadow-sm md:flex-row md:items-center md:justify-between md:gap-8 md:p-8">
-            {/* 左侧：图标 + 大标题 + 说明 */}
-            <div className="flex items-start gap-4">
-              <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-[#0ab2bd]/10">
-                <FileText className="h-7 w-7 text-[#0ab2bd]" />
-              </div>
-              <div>
-                <h2 className="text-xl font-bold text-foreground md:text-2xl">下载完整产品彩页</h2>
-                <p className="mt-1.5 max-w-md text-sm text-muted-foreground leading-relaxed">
-                  包含 6 款商捷过检设备的完整产品彩页与使用场景等信息
-                </p>
-              </div>
+          {/* 汇总下载大卡片：标题居中置顶，下方左右两栏 */}
+          <div className="mb-8 rounded-2xl border border-border bg-background p-6 shadow-sm md:p-8">
+            {/* 顶部居中：板块总标题（主色调、加大） */}
+            <div className="mb-6 text-center">
+              <span className="text-3xl font-extrabold tracking-wide text-[#0ab2bd] md:text-4xl">产品彩页</span>
             </div>
 
-            {/* 中间：板块总标题 */}
-            <div className="shrink-0 text-center md:px-6">
-              <span className="text-2xl font-extrabold tracking-wide text-foreground md:text-3xl">产品彩页</span>
-            </div>
+            <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between md:gap-8">
+              {/* 左侧：图标 + 大标题 + 说明 */}
+              <div className="flex items-start gap-4">
+                <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-[#0ab2bd]/10">
+                  <FileText className="h-7 w-7 text-[#0ab2bd]" />
+                </div>
+                <div>
+                  <h2 className="text-xl font-bold text-foreground md:text-2xl">下载完整产品彩页</h2>
+                  <p className="mt-2 max-w-xl text-base font-medium text-foreground/70 leading-relaxed md:text-lg">
+                    包含 6 款商捷过检设备的完整产品彩页与使用场景等信息
+                  </p>
+                </div>
+              </div>
 
-            {/* 右侧：主按钮 */}
-            <button
-              onClick={handleDownloadAll}
-              className="inline-flex shrink-0 items-center justify-center gap-2 rounded-xl bg-[#0ab2bd] px-6 py-3.5 text-base font-semibold text-white shadow-sm transition-colors hover:bg-[#089aa3]"
-            >
-              <Download className="h-5 w-5" />
-              下载全部彩页
-            </button>
+              {/* 右侧：主按钮 */}
+              <button
+                onClick={handleDownloadAll}
+                className="inline-flex shrink-0 items-center justify-center gap-2 rounded-xl bg-[#0ab2bd] px-6 py-3.5 text-base font-semibold text-white shadow-sm transition-colors hover:bg-[#089aa3]"
+              >
+                <Download className="h-5 w-5" />
+                下载全部彩页
+              </button>
+            </div>
           </div>
 
           {/* 6 台设备卡片网格 */}
@@ -403,47 +405,47 @@ export function DocumentCenter({ basePath = "./" }: DocumentCenterProps) {
             {products.map((device) => (
               <div
                 key={device.slug}
-                className="flex flex-col rounded-2xl border border-border bg-background p-5 shadow-sm transition-all hover:-translate-y-1 hover:shadow-lg"
+                className="grid grid-cols-2 overflow-hidden rounded-2xl border border-border bg-background shadow-sm transition-all hover:-translate-y-1 hover:shadow-lg"
               >
-                <div className="flex gap-4">
-                  {/* 左侧：产品图 */}
-                  <div className="flex h-28 w-24 shrink-0 items-center justify-center rounded-xl bg-muted/40 p-2">
-                    <img
-                      src={imgPath(device.image) || "/placeholder.svg"}
-                      alt={`${device.name} 产品图`}
-                      className="h-full w-full object-contain"
-                    />
-                  </div>
-
-                  {/* 右侧：名称 + 4 行参数 */}
-                  <div className="min-w-0 flex-1">
-                    <h3 className="mb-2 text-base font-bold text-foreground">{device.name}</h3>
-                    <dl className="space-y-1 text-xs text-muted-foreground">
-                      <div className="flex gap-1">
-                        <dt className="shrink-0">认证型号：</dt>
-                        <dd className="truncate text-foreground/80">{device.model}</dd>
-                      </div>
-                      <div className="flex gap-1">
-                        <dt className="shrink-0">操作系统：</dt>
-                        <dd className="truncate text-foreground/80">{device.os}</dd>
-                      </div>
-                      <div className="flex gap-1">
-                        <dt className="shrink-0">存储器：</dt>
-                        <dd className="truncate text-foreground/80">{device.storage}</dd>
-                      </div>
-                      <div className="flex gap-1">
-                        <dt className="shrink-0">业务模式：</dt>
-                        <dd className="truncate text-foreground/80">{device.businessMode}</dd>
-                      </div>
-                    </dl>
-                  </div>
+                {/* 左半边：产品图，铺满整个左半区 */}
+                <div className="flex items-center justify-center bg-muted/40 p-3">
+                  <img
+                    src={imgPath(device.image) || "/placeholder.svg"}
+                    alt={`${device.name} 产品图`}
+                    className="h-full max-h-56 w-full object-contain"
+                  />
                 </div>
 
-                {/* 右下角：查看详情按钮 */}
-                <div className="mt-4 flex justify-end">
+                {/* 右半边：名称 + 横线 + 4 行参数 + 按钮 */}
+                <div className="flex flex-col p-4">
+                  <h3 className="text-base font-bold text-foreground">{device.name}</h3>
+
+                  {/* 名称与参数之间的分隔横线 */}
+                  <hr className="my-3 border-border" />
+
+                  <dl className="space-y-2 text-sm">
+                    <div className="flex">
+                      <dt className="w-[4.5rem] shrink-0 text-muted-foreground">认证型号</dt>
+                      <dd className="min-w-0 flex-1 truncate text-foreground/80">{device.model}</dd>
+                    </div>
+                    <div className="flex">
+                      <dt className="w-[4.5rem] shrink-0 text-muted-foreground">操作系统</dt>
+                      <dd className="min-w-0 flex-1 truncate text-foreground/80">{device.os}</dd>
+                    </div>
+                    <div className="flex">
+                      <dt className="w-[4.5rem] shrink-0 text-muted-foreground">存储器</dt>
+                      <dd className="min-w-0 flex-1 truncate text-foreground/80">{device.storage}</dd>
+                    </div>
+                    <div className="flex">
+                      <dt className="w-[4.5rem] shrink-0 text-muted-foreground">业务模式</dt>
+                      <dd className="min-w-0 flex-1 truncate text-foreground/80">{device.businessMode}</dd>
+                    </div>
+                  </dl>
+
+                  {/* 查看详情按钮：与参数区等宽、主色实心、加大 */}
                   <a
                     href={devicePath(device.slug)}
-                    className="inline-flex items-center gap-1 rounded-lg border border-[#0ab2bd] px-4 py-2 text-sm font-medium text-[#0ab2bd] transition-colors hover:bg-[#0ab2bd] hover:text-white"
+                    className="mt-4 inline-flex w-full items-center justify-center gap-1 rounded-lg bg-[#0ab2bd] px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-[#089aa3]"
                   >
                     查看详情
                     <ChevronRight className="h-4 w-4" />

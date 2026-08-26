@@ -372,8 +372,8 @@ export function DocumentCenter({ basePath = "./" }: DocumentCenterProps) {
           <div className="relative mb-8 flex flex-col gap-6 rounded-2xl border border-border bg-background p-6 shadow-sm md:flex-row md:items-end md:justify-between md:gap-8 md:px-8 md:pb-6 md:pt-16">
             {/* 左栏：图标 + 标题 + 说明 */}
             <div className="flex items-start gap-4">
-              <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-[#0ab2bd]/10">
-                <FileText className="h-7 w-7 text-[#0ab2bd]" />
+              <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-[#0ab2bd]/10">
+                <FileText className="h-9 w-9 text-[#0ab2bd]" />
               </div>
               <div>
                 <h2 className="text-xl font-bold text-foreground md:text-2xl">下载完整资料</h2>
@@ -423,27 +423,27 @@ export function DocumentCenter({ basePath = "./" }: DocumentCenterProps) {
 
                   <dl className="space-y-2 text-base">
                     <div className="flex">
-                      <dt className="w-[4.5rem] shrink-0 text-muted-foreground">认证型号</dt>
-                      <dd className="flex-1 whitespace-nowrap text-foreground/80">{device.model}</dd>
+                      <dt className="w-[5rem] shrink-0 text-muted-foreground">认证型号：</dt>
+                      <dd className="flex-1 whitespace-nowrap pl-2 text-foreground/80">{device.model}</dd>
                     </div>
                     <div className="flex">
-                      <dt className="w-[4.5rem] shrink-0 text-muted-foreground">操作系统</dt>
-                      <dd className="flex-1 whitespace-nowrap text-foreground/80">{device.os}</dd>
+                      <dt className="w-[5rem] shrink-0 text-muted-foreground">操作系统：</dt>
+                      <dd className="flex-1 whitespace-nowrap pl-2 text-foreground/80">{device.os}</dd>
                     </div>
                     <div className="flex">
-                      <dt className="w-[4.5rem] shrink-0 text-muted-foreground">存储器</dt>
-                      <dd className="flex-1 whitespace-nowrap text-foreground/80">{device.storage}</dd>
+                      <dt className="w-[5rem] shrink-0 text-muted-foreground">存储器：</dt>
+                      <dd className="flex-1 whitespace-nowrap pl-2 text-foreground/80">{device.storage}</dd>
                     </div>
                     <div className="flex">
-                      <dt className="w-[4.5rem] shrink-0 text-muted-foreground">业务模式</dt>
-                      <dd className="flex-1 whitespace-nowrap text-foreground/80">{device.businessMode}</dd>
+                      <dt className="w-[5rem] shrink-0 text-muted-foreground">业务模式：</dt>
+                      <dd className="flex-1 whitespace-nowrap pl-2 text-foreground/80">{device.businessMode}</dd>
                     </div>
                   </dl>
 
                   {/* 查看详情按钮：与参数区等宽、主色实心、加大 */}
                   <a
                     href={devicePath(device.slug)}
-                    className="mt-4 inline-flex w-full items-center justify-center gap-1 rounded-lg bg-[#0ab2bd] px-4 py-2.5 text-base font-semibold text-white transition-colors hover:bg-[#089aa3]"
+                    className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-lg bg-[#0ab2bd] px-8 py-2.5 text-base font-semibold text-white transition-colors hover:bg-[#089aa3]"
                   >
                     查看详情
                     <ChevronRight className="h-5 w-5" />

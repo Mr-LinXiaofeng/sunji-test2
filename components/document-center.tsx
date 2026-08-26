@@ -1,9 +1,11 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { toast, Toaster } from "sonner"
-import { FolderDown, Download, HardDrive, Loader2 } from "lucide-react"
+import { Toaster } from "sonner"
+import { FolderDown, Download, HardDrive, FileText, ChevronRight } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { products } from "@/lib/products"
+import { downloadFileWithProgress, fetchFileSize, formatBytes } from "@/lib/file-download"
 
 type IconProps = { className?: string }
 
@@ -22,15 +24,7 @@ function WordIcon({ className }: IconProps) {
     >
       <path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z" />
       <path d="M14 3v5h5" />
-      <text
-        x="12"
-        y="17.5"
-        fontSize="6.5"
-        fontWeight="700"
-        textAnchor="middle"
-        fill="currentColor"
-        stroke="none"
-      >
+      <text x="12" y="17.5" fontSize="6.5" fontWeight="700" textAnchor="middle" fill="currentColor" stroke="none">
         W
       </text>
     </svg>
@@ -78,15 +72,7 @@ function PdfIcon({ className }: IconProps) {
       {/* 前层书页 */}
       <path d="M15 3H8.5A1.5 1.5 0 0 0 7 4.5v11A1.5 1.5 0 0 0 8.5 17H18a1.5 1.5 0 0 0 1.5-1.5V7.5z" />
       <path d="M15 3v4.5h4.5" />
-      <text
-        x="12.5"
-        y="13.5"
-        fontSize="4.2"
-        fontWeight="700"
-        textAnchor="middle"
-        fill="currentColor"
-        stroke="none"
-      >
+      <text x="12.5" y="13.5" fontSize="4.2" fontWeight="700" textAnchor="middle" fill="currentColor" stroke="none">
         PDF
       </text>
     </svg>
@@ -112,89 +98,6 @@ function ZipIcon({ className }: IconProps) {
       <path d="M12 8.5v8" strokeDasharray="1.5 1.5" />
       <rect x="10.75" y="16" width="2.5" height="3" rx="0.5" />
     </svg>
-  )
-}
-
-// 把 "29.1 MB" / "271 KB" 这类文本解析为字节数，作为无 Content-Length 时的进度分母
-function parseSizeToBytes(size: string): number {
-  const match = size.trim().match(/^([\d.]+)\s*(KB|MB|GB|B)$/i)
-  if (!match) return 0
-  const value = Number.parseFloat(match[1])
-  const unit = match[2].toUpperCase()
-  const factor = unit === "GB" ? 1024 ** 3 : unit === "MB" ? 1024 ** 2 : unit === "KB" ? 1024 : 1
-  return Math.round(value * factor)
-}
-
-// 把字节数格式化为可读文本，如 34482014 → "32.9 MB"
-function formatBytes(bytes: number): string {
-  if (!bytes || bytes <= 0) return "—"
-  const units = ["B", "KB", "MB", "GB"]
-  let value = bytes
-  let i = 0
-  while (value >= 1024 && i < units.length - 1) {
-    value /= 1024
-    i++
-  }
-  return `${i === 0 ? Math.round(value) : value.toFixed(1)} ${units[i]}`
-}
-
-// 通过网络请求获取文件真实大小（字节），优先 HEAD，回退到 Range 请求
-async function fetchFileSize(url: string): Promise<number> {
-  try {
-    const head = await fetch(url, { method: "HEAD" })
-    const len = Number(head.headers.get("Content-Length"))
-    if (len > 0) return len
-  } catch {
-    // 忽略，继续尝试 Range 请求
-  }
-  try {
-    const res = await fetch(url, { headers: { Range: "bytes=0-0" } })
-    const contentRange = res.headers.get("Content-Range") // 形如 "bytes 0-0/34482014"
-    if (contentRange && contentRange.includes("/")) {
-      const total = Number(contentRange.split("/")[1])
-      if (total > 0) return total
-    }
-    const len = Number(res.headers.get("Content-Length"))
-    if (len > 0) return len
-  } catch {
-    // 忽略
-  }
-  return 0
-}
-
-// 判断当前是否以本地文件方式打开（双击 index.html）
-function useIsFileProtocol() {
-  const [isFile, setIsFile] = useState(false)
-  useEffect(() => {
-    setIsFile(window.location.protocol === "file:")
-  }, [])
-  return isFile
-}
-
-// 下载中的 toast，带转圈图标和进度条
-function DownloadToast({ name, percent }: { name: string; percent: number | null }) {
-  const showBar = percent !== null
-  return (
-    <div className="flex w-[356px] flex-col gap-2 rounded-lg border border-border bg-background p-4 shadow-lg">
-      <div className="flex items-center gap-2.5">
-        <Loader2 className="h-4 w-4 shrink-0 animate-spin text-[#0ab2bd]" />
-        <span className="flex-1 truncate text-sm font-medium text-foreground">
-          正在下载：{name}
-        </span>
-        {showBar && (
-          <span className="shrink-0 text-xs font-semibold text-[#0ab2bd]">{percent}%</span>
-        )}
-      </div>
-      <div className="h-1.5 w-full overflow-hidden rounded-full bg-muted">
-        <div
-          className={cn(
-            "h-full rounded-full bg-[#0ab2bd] transition-all duration-200",
-            !showBar && "w-1/3 animate-pulse"
-          )}
-          style={showBar ? { width: `${percent}%` } : undefined}
-        />
-      </div>
-    </div>
   )
 }
 
@@ -249,18 +152,30 @@ const typeConfig: Record<
   },
 }
 
+// 判断当前是否以本地文件方式打开（双击 index.html）
+function useIsFileProtocol() {
+  const [isFile, setIsFile] = useState(false)
+  useEffect(() => {
+    setIsFile(window.location.protocol === "file:")
+  }, [])
+  return isFile
+}
+
 interface DocumentCenterProps {
   basePath?: string
 }
 
 export function DocumentCenter({ basePath = "./" }: DocumentCenterProps) {
-  const [activeTab, setActiveTab] = useState<"all" | "device" | "semi" | "full">("all")
+  const [activeTab, setActiveTab] = useState<"brochure" | "device" | "semi" | "full">("brochure")
   const isFile = useIsFileProtocol()
   // 前端实时获取的文件大小（服务器替换文件后会自动跟随变化）
   const [sizes, setSizes] = useState<Record<string, string>>({})
 
   // 本地文件方式打开时用相对路径，http 环境（预览/部署）用绝对路径
   const docPath = (name: string) => (isFile ? `${basePath}docs/${name}` : `/docs/${name}`)
+  const imgPath = (name: string) => (isFile ? `${basePath}images/products/${name}` : `/images/products/${name}`)
+  // 设备详情页路由：http 环境用干净路由，本地文件方式用相对 index.html
+  const devicePath = (slug: string) => (isFile ? `${basePath}device/${slug}/index.html` : `/device/${slug}`)
 
   const documents: DocItem[] = [
     {
@@ -382,7 +297,7 @@ export function DocumentCenter({ basePath = "./" }: DocumentCenterProps) {
       documents.map(async (doc) => {
         const bytes = await fetchFileSize(doc.file)
         return [doc.id, bytes > 0 ? formatBytes(bytes) : doc.size] as const
-      })
+      }),
     ).then((entries) => {
       if (!cancelled) setSizes(Object.fromEntries(entries))
     })
@@ -393,85 +308,32 @@ export function DocumentCenter({ basePath = "./" }: DocumentCenterProps) {
   }, [isFile])
 
   const tabs = [
-    { key: "all" as const, label: "全部" },
+    { key: "brochure" as const, label: "产品彩页" },
     { key: "device" as const, label: "设备实施" },
     { key: "semi" as const, label: "半自助" },
     { key: "full" as const, label: "全自助（二次开发）" },
   ]
 
-  const visibleDocs =
-    activeTab === "all" ? documents : documents.filter((d) => d.category === activeTab)
+  const visibleDocs = activeTab === "brochure" ? [] : documents.filter((d) => d.category === activeTab)
 
-  const handleDownload = async (doc: DocItem) => {
-    const toastId = `download-${doc.id}`
+  const handleDownload = (doc: DocItem) =>
+    downloadFileWithProgress({
+      id: doc.id,
+      name: doc.name,
+      file: doc.file,
+      downloadName: doc.downloadName,
+      size: sizes[doc.id] ?? doc.size,
+    })
 
-    // 渲染带进度条的下载中 toast
-    const renderProgress = (percent: number | null) =>
-      toast.custom(
-        () => <DownloadToast name={doc.name} percent={percent} />,
-        { id: toastId, duration: Number.POSITIVE_INFINITY }
-      )
-
-    renderProgress(0)
-
-    try {
-      // 用 fetch 把文件抓成 blob，再用程序触发下载，避免页面在 iframe 中跳转
-      const res = await fetch(doc.file)
-      if (!res.ok) throw new Error(`HTTP ${res.status}`)
-
-      // 优先用响应头的 Content-Length，缺失时回退到已获取的真实大小，保证能算出真实百分比
-      const total =
-        Number(res.headers.get("Content-Length")) || parseSizeToBytes(sizes[doc.id] ?? doc.size)
-      let blob: Blob
-
-      if (res.body) {
-        // 流式读取，实时更新进度
-        const reader = res.body.getReader()
-        const chunks: Uint8Array[] = []
-        let received = 0
-
-        while (true) {
-          const { done, value } = await reader.read()
-          if (done) break
-          if (value) {
-            chunks.push(value)
-            received += value.length
-            if (total > 0) {
-              // 下载中最多显示到 99%，完成后再置 100%，避免提前满格
-              renderProgress(Math.min(99, Math.floor((received / total) * 100)))
-            } else {
-              renderProgress(null)
-            }
-          }
-        }
-        blob = new Blob(chunks as BlobPart[])
-        renderProgress(100)
-      } else {
-        // 极少数环境不支持流式读取时，退化为整体读取
-        renderProgress(null)
-        blob = await res.blob()
-      }
-
-      const blobUrl = URL.createObjectURL(blob)
-      const link = document.createElement("a")
-      link.href = blobUrl
-      link.download = doc.downloadName
-      document.body.appendChild(link)
-      link.click()
-      document.body.removeChild(link)
-
-      // 释放 blob 链接
-      URL.revokeObjectURL(blobUrl)
-
-      // 先关闭进度条 toast，再弹出成功提示，确保成功提示可靠显示
-      toast.dismiss(toastId)
-      toast.success("下载成功！", { duration: 3000 })
-    } catch (err) {
-      console.log("[v0] download error:", err)
-      toast.dismiss(toastId)
-      toast.error("下载失败，请稍后重试", { duration: 3000 })
-    }
-  }
+  // 下载全部产品彩页
+  const handleDownloadAll = () =>
+    downloadFileWithProgress({
+      id: "all-products-brochure",
+      name: "所有产品彩页",
+      file: docPath("all-products-brochure.pdf"),
+      downloadName: "所有产品彩页.pdf",
+      size: "18.9 MB",
+    })
 
   return (
     <div className="container mx-auto px-4 py-12">
@@ -482,12 +344,12 @@ export function DocumentCenter({ basePath = "./" }: DocumentCenterProps) {
         </div>
         <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4 text-balance">文档下载中心</h1>
         <p className="max-w-2xl text-base md:text-lg text-muted-foreground leading-relaxed text-pretty">
-          提供产品实施相关文档资源，方便您查阅和使用。所有文档均经过安全扫描，请放心下载。
+          提供产品彩页与实施相关文档资源，方便您查阅和使用。所有文档均经过安全扫描，请放心下载。
         </p>
       </div>
 
-      {/* 分���按钮 */}
-      <div className="flex items-center justify-center gap-3 mb-10">
+      {/* 分类按钮 */}
+      <div className="flex flex-wrap items-center justify-center gap-3 mb-10">
         {tabs.map((tab) => (
           <button
             key={tab.key}
@@ -496,7 +358,7 @@ export function DocumentCenter({ basePath = "./" }: DocumentCenterProps) {
               "rounded-full px-8 py-2.5 text-base font-medium transition-all border",
               activeTab === tab.key
                 ? "bg-[#0ab2bd] text-white border-[#0ab2bd] shadow-md"
-                : "bg-background text-foreground/70 border-border hover:border-[#0ab2bd] hover:text-[#0ab2bd]"
+                : "bg-background text-foreground/70 border-border hover:border-[#0ab2bd] hover:text-[#0ab2bd]",
             )}
           >
             {tab.label}
@@ -504,66 +366,146 @@ export function DocumentCenter({ basePath = "./" }: DocumentCenterProps) {
         ))}
       </div>
 
-      {/* 文档卡片网格 */}
-      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 max-w-6xl mx-auto">
-        {visibleDocs.map((doc) => {
-          const config = typeConfig[doc.type]
-          const Icon = config.icon
-          return (
-            <div
-              key={doc.id}
-              className="flex flex-col rounded-xl border border-border bg-background p-4 transition-all hover:shadow-lg"
-            >
-              {/* 右上角类型小标签 */}
-              <div className="flex justify-end mb-3">
-                <span
-                  className={cn(
-                    "inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium",
-                    config.tagBg
-                  )}
-                >
-                  {config.label}
-                </span>
+      {activeTab === "brochure" ? (
+        <div className="max-w-6xl mx-auto">
+          {/* 汇总下载大卡片：通栏，左中右三栏 */}
+          <div className="mb-8 flex flex-col gap-6 rounded-2xl border border-border bg-background p-6 shadow-sm md:flex-row md:items-center md:justify-between md:gap-8 md:p-8">
+            {/* 左侧：图标 + 大标题 + 说明 */}
+            <div className="flex items-start gap-4">
+              <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-[#0ab2bd]/10">
+                <FileText className="h-7 w-7 text-[#0ab2bd]" />
               </div>
-
-              {/* 文档类型图标 */}
-              <div
-                className={cn(
-                  "flex h-20 w-20 items-center justify-center rounded-xl mb-3",
-                  config.iconBg
-                )}
-              >
-                <Icon className={cn("h-11 w-11", config.color)} />
+              <div>
+                <h2 className="text-xl font-bold text-foreground md:text-2xl">下载完整产品彩页</h2>
+                <p className="mt-1.5 max-w-md text-sm text-muted-foreground leading-relaxed">
+                  包含 6 款商捷过检设备的完整产品彩页与使用场景等信息
+                </p>
               </div>
-
-              {/* 文档名 */}
-              <h3 className="text-base font-bold text-foreground mb-1.5 break-words leading-snug">
-                {doc.name}
-              </h3>
-
-              {/* 文档简介 */}
-              <p className="text-xs text-muted-foreground leading-relaxed mb-3 flex-1">
-                {doc.description}
-              </p>
-
-              {/* 文件大小（前端实时获取，服务器替换文件后自动更新） */}
-              <div className="flex items-center gap-1.5 text-xs text-muted-foreground mb-4">
-                <HardDrive className="w-3.5 h-3.5" />
-                <span>{sizes[doc.id] ?? "获取中…"}</span>
-              </div>
-
-              {/* 下载按钮 */}
-              <button
-                onClick={() => handleDownload(doc)}
-                className="inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-sm font-medium text-white bg-[#0ab2bd] hover:bg-[#089aa3] transition-colors"
-              >
-                <Download className="w-4 h-4" />
-                下载文档
-              </button>
             </div>
-          )
-        })}
-      </div>
+
+            {/* 中间：板块总标题 */}
+            <div className="shrink-0 text-center md:px-6">
+              <span className="text-2xl font-extrabold tracking-wide text-foreground md:text-3xl">产品彩页</span>
+            </div>
+
+            {/* 右侧：主按钮 */}
+            <button
+              onClick={handleDownloadAll}
+              className="inline-flex shrink-0 items-center justify-center gap-2 rounded-xl bg-[#0ab2bd] px-6 py-3.5 text-base font-semibold text-white shadow-sm transition-colors hover:bg-[#089aa3]"
+            >
+              <Download className="h-5 w-5" />
+              下载全部彩页
+            </button>
+          </div>
+
+          {/* 6 台设备卡片网格 */}
+          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {products.map((device) => (
+              <div
+                key={device.slug}
+                className="flex flex-col rounded-2xl border border-border bg-background p-5 shadow-sm transition-all hover:-translate-y-1 hover:shadow-lg"
+              >
+                <div className="flex gap-4">
+                  {/* 左侧：产品图 */}
+                  <div className="flex h-28 w-24 shrink-0 items-center justify-center rounded-xl bg-muted/40 p-2">
+                    <img
+                      src={imgPath(device.image) || "/placeholder.svg"}
+                      alt={`${device.name} 产品图`}
+                      className="h-full w-full object-contain"
+                    />
+                  </div>
+
+                  {/* 右侧：名称 + 4 行参数 */}
+                  <div className="min-w-0 flex-1">
+                    <h3 className="mb-2 text-base font-bold text-foreground">{device.name}</h3>
+                    <dl className="space-y-1 text-xs text-muted-foreground">
+                      <div className="flex gap-1">
+                        <dt className="shrink-0">认证型号：</dt>
+                        <dd className="truncate text-foreground/80">{device.model}</dd>
+                      </div>
+                      <div className="flex gap-1">
+                        <dt className="shrink-0">操作系统：</dt>
+                        <dd className="truncate text-foreground/80">{device.os}</dd>
+                      </div>
+                      <div className="flex gap-1">
+                        <dt className="shrink-0">存储器：</dt>
+                        <dd className="truncate text-foreground/80">{device.storage}</dd>
+                      </div>
+                      <div className="flex gap-1">
+                        <dt className="shrink-0">业务模式：</dt>
+                        <dd className="truncate text-foreground/80">{device.businessMode}</dd>
+                      </div>
+                    </dl>
+                  </div>
+                </div>
+
+                {/* 右下角：查看详情按钮 */}
+                <div className="mt-4 flex justify-end">
+                  <a
+                    href={devicePath(device.slug)}
+                    className="inline-flex items-center gap-1 rounded-lg border border-[#0ab2bd] px-4 py-2 text-sm font-medium text-[#0ab2bd] transition-colors hover:bg-[#0ab2bd] hover:text-white"
+                  >
+                    查看详情
+                    <ChevronRight className="h-4 w-4" />
+                  </a>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      ) : (
+        /* 文档卡片网格 */
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 max-w-6xl mx-auto">
+          {visibleDocs.map((doc) => {
+            const config = typeConfig[doc.type]
+            const Icon = config.icon
+            return (
+              <div
+                key={doc.id}
+                className="flex flex-col rounded-xl border border-border bg-background p-4 transition-all hover:shadow-lg"
+              >
+                {/* 右上角类型小标签 */}
+                <div className="flex justify-end mb-3">
+                  <span
+                    className={cn(
+                      "inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium",
+                      config.tagBg,
+                    )}
+                  >
+                    {config.label}
+                  </span>
+                </div>
+
+                {/* 文档类型图标 */}
+                <div className={cn("flex h-20 w-20 items-center justify-center rounded-xl mb-3", config.iconBg)}>
+                  <Icon className={cn("h-11 w-11", config.color)} />
+                </div>
+
+                {/* 文档名 */}
+                <h3 className="text-base font-bold text-foreground mb-1.5 break-words leading-snug">{doc.name}</h3>
+
+                {/* 文档简介 */}
+                <p className="text-xs text-muted-foreground leading-relaxed mb-3 flex-1">{doc.description}</p>
+
+                {/* 文件大小（前端实时获取，服务器替换文件后自动更新） */}
+                <div className="flex items-center gap-1.5 text-xs text-muted-foreground mb-4">
+                  <HardDrive className="w-3.5 h-3.5" />
+                  <span>{sizes[doc.id] ?? "获取中…"}</span>
+                </div>
+
+                {/* 下载按钮 */}
+                <button
+                  onClick={() => handleDownload(doc)}
+                  className="inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-sm font-medium text-white bg-[#0ab2bd] hover:bg-[#089aa3] transition-colors"
+                >
+                  <Download className="w-4 h-4" />
+                  下载文档
+                </button>
+              </div>
+            )
+          })}
+        </div>
+      )}
 
       <Toaster position="bottom-right" richColors />
     </div>

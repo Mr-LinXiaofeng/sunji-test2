@@ -384,7 +384,7 @@ export function DocumentCenter({ basePath = "./" }: DocumentCenterProps) {
             </div>
 
             {/* 中间：产品彩页——与标题同行，水平居中于整张卡片 */}
-            <span className="text-2xl font-extrabold tracking-wide text-[#0ab2bd] md:absolute md:left-1/2 md:top-8 md:-translate-x-1/2 md:text-3xl">
+            <span className="text-3xl font-extrabold tracking-wide text-[#0ab2bd] md:absolute md:left-1/2 md:top-6 md:-translate-x-1/2 md:text-4xl">
               产品彩页
             </span>
 
@@ -421,7 +421,7 @@ export function DocumentCenter({ basePath = "./" }: DocumentCenterProps) {
                   {/* 名称与参数之间的分隔横线 */}
                   <hr className="my-3 border-t-2 border-border" />
 
-                  <dl className="space-y-2 text-sm">
+                  <dl className="space-y-2 text-base">
                     <div className="flex">
                       <dt className="w-[4.5rem] shrink-0 text-muted-foreground">认证型号</dt>
                       <dd className="flex-1 whitespace-nowrap text-foreground/80">{device.model}</dd>
@@ -443,10 +443,10 @@ export function DocumentCenter({ basePath = "./" }: DocumentCenterProps) {
                   {/* 查看详情按钮：与参数区等宽、主色实心、加大 */}
                   <a
                     href={devicePath(device.slug)}
-                    className="mt-4 inline-flex w-full items-center justify-center gap-1 rounded-lg bg-[#0ab2bd] px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-[#089aa3]"
+                    className="mt-4 inline-flex w-full items-center justify-center gap-1 rounded-lg bg-[#0ab2bd] px-4 py-2.5 text-base font-semibold text-white transition-colors hover:bg-[#089aa3]"
                   >
                     查看详情
-                    <ChevronRight className="h-4 w-4" />
+                    <ChevronRight className="h-5 w-5" />
                   </a>
                 </div>
               </div>

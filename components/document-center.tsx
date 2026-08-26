@@ -368,8 +368,8 @@ export function DocumentCenter({ basePath = "./" }: DocumentCenterProps) {
 
       {activeTab === "brochure" ? (
         <div className="max-w-6xl mx-auto">
-          {/* 汇总下载大卡片：左中右三栏 */}
-          <div className="mb-8 flex flex-col gap-6 rounded-2xl border border-border bg-background p-6 shadow-sm md:flex-row md:items-center md:justify-between md:gap-8 md:p-8">
+          {/* 汇总下载大卡片：左中右三栏，中间标题绝对居中 */}
+          <div className="relative mb-8 flex flex-col gap-6 rounded-2xl border border-border bg-background p-6 shadow-sm md:flex-row md:items-center md:justify-between md:gap-8 md:p-8">
             {/* 左栏：图标 + 标题 + 说明 */}
             <div className="flex items-start gap-4">
               <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-[#0ab2bd]/10">
@@ -383,10 +383,10 @@ export function DocumentCenter({ basePath = "./" }: DocumentCenterProps) {
               </div>
             </div>
 
-            {/* 中栏：产品彩页 */}
-            <div className="shrink-0 text-center md:px-6">
-              <span className="text-2xl font-extrabold tracking-wide text-[#0ab2bd] md:text-3xl">产品彩页</span>
-            </div>
+            {/* 中间：产品彩页——与标题同行，水平居中于整张卡片 */}
+            <span className="text-2xl font-extrabold tracking-wide text-[#0ab2bd] md:absolute md:left-1/2 md:top-8 md:-translate-x-1/2 md:text-3xl">
+              产品彩页
+            </span>
 
             {/* 右栏：主按钮 */}
             <button

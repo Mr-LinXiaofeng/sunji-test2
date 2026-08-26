@@ -368,20 +368,30 @@ export function DocumentCenter({ basePath = "./" }: DocumentCenterProps) {
 
       {activeTab === "brochure" ? (
         <div className="max-w-6xl mx-auto">
-          {/* 汇总下载大卡片：整栏居中 */}
-          <div className="mb-8 flex flex-col items-center rounded-2xl border border-border bg-background p-6 text-center shadow-sm md:p-8">
-            {/* 标题同行、居中 */}
-            <h2 className="flex flex-wrap items-baseline justify-center gap-x-3 gap-y-1">
+          {/* 汇总下载大卡片：左中右三栏 */}
+          <div className="mb-8 flex flex-col gap-6 rounded-2xl border border-border bg-background p-6 shadow-sm md:flex-row md:items-center md:justify-between md:gap-8 md:p-8">
+            {/* 左栏：图标 + 标题 + 说明 */}
+            <div className="flex items-start gap-4">
+              <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-[#0ab2bd]/10">
+                <FileText className="h-7 w-7 text-[#0ab2bd]" />
+              </div>
+              <div>
+                <h2 className="text-xl font-bold text-foreground md:text-2xl">下载完整资料</h2>
+                <p className="mt-2 max-w-md text-base font-medium text-foreground/70 leading-relaxed">
+                  包含 6 款商捷过检设备的完整产品彩页与使用场景等信息
+                </p>
+              </div>
+            </div>
+
+            {/* 中栏：产品彩页 */}
+            <div className="shrink-0 text-center md:px-6">
               <span className="text-2xl font-extrabold tracking-wide text-[#0ab2bd] md:text-3xl">产品彩页</span>
-              <span className="text-xl font-bold text-foreground md:text-2xl">下载完整产品彩页</span>
-            </h2>
-            <p className="mt-2 max-w-xl text-base font-medium text-foreground/70 leading-relaxed md:text-lg">
-              包含 6 款商捷过检设备的完整产品彩页与使用场景等信息
-            </p>
-            {/* 主按钮 */}
+            </div>
+
+            {/* 右栏：主按钮 */}
             <button
               onClick={handleDownloadAll}
-              className="mt-5 inline-flex items-center justify-center gap-2 rounded-xl bg-[#0ab2bd] px-6 py-3.5 text-base font-semibold text-white shadow-sm transition-colors hover:bg-[#089aa3]"
+              className="inline-flex shrink-0 items-center justify-center gap-2 rounded-xl bg-[#0ab2bd] px-6 py-3.5 text-base font-semibold text-white shadow-sm transition-colors hover:bg-[#089aa3]"
             >
               <Download className="h-5 w-5" />
               下载全部彩页

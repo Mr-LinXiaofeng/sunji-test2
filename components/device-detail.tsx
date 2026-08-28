@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { Toaster } from "sonner"
-import { Download, HardDrive } from "lucide-react"
+import { Download, HardDrive, LifeBuoy } from "lucide-react"
 import type { ProductDevice } from "@/lib/products"
 import { downloadFileWithProgress, fetchFileSize, formatBytes } from "@/lib/file-download"
 import { BackToHomeButton } from "@/components/back-to-home-button"
@@ -106,13 +106,26 @@ export function DeviceDetail({ device, basePath = "../../" }: DeviceDetailProps)
               <span>产品彩页 PDF · {size}</span>
             </div>
 
-            <button
-              onClick={handleDownload}
-              className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#0ab2bd] px-6 py-3.5 text-base font-semibold text-white shadow-sm transition-colors hover:bg-[#089aa3]"
-            >
-              <Download className="h-5 w-5" />
-              下载产品彩页
-            </button>
+            <div className="flex flex-wrap items-center gap-3">
+              <button
+                onClick={handleDownload}
+                className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#0ab2bd] px-6 py-3.5 text-base font-semibold text-white shadow-sm transition-colors hover:bg-[#089aa3]"
+              >
+                <Download className="h-5 w-5" />
+                下载产品彩页
+              </button>
+              {device.supportUrl && (
+                <a
+                  href={device.supportUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center gap-2 rounded-xl border border-[#0ab2bd] px-6 py-3.5 text-base font-semibold text-[#0ab2bd] transition-colors hover:bg-[#0ab2bd] hover:text-white"
+                >
+                  <LifeBuoy className="h-5 w-5" />
+                  获取技术支持
+                </a>
+              )}
+            </div>
           </div>
         </div>
 

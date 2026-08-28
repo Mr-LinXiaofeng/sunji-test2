@@ -34,6 +34,7 @@ export interface ProductDevice {
   downloadName: string // 下载时的文件名
   series: string // 产品系列/型号别名
   brochureSize: string // 彩页大小兜底值（前端会实时探测覆盖）
+  supportUrl?: string // 获取技术支持链接（可选）
   tagline?: string // 简短业务场景描述（可选）
   tags?: string[] // 核心标签（可选）
   specs: ProductSpec[] // 详细技术参数
@@ -56,6 +57,7 @@ export const products: ProductDevice[] = [
     downloadName: "平板T671A下载.pdf",
     series: "SUNJI T671A 智能平板终端",
     brochureSize: "928.6 KB",
+    supportUrl: "https://www.yuque.com/jiatao-ae47m/knowledgebase/gi8914icoh4dtxif",
     tagline: "面向基层医疗与移动办公的智能平板终端，支持体检登记、床旁护理与家庭随访等全场景应用。",
     tags: ["10.95″ 高清大屏", "3D 结构光刷脸", "8000mAh 长续航", "全自助 / 半自助"],
     specs: [
@@ -106,6 +108,7 @@ export const products: ProductDevice[] = [
     downloadName: "桌面T3B0B下载.pdf",
     series: "SUNJI F2H 医保智能终端",
     brochureSize: "18.1 MB",
+    supportUrl: "https://www.yuque.com/jiatao-ae47m/knowledgebase/rysq1q56aig6zggi",
     tagline: "面向医院窗口与药店柜台的医保碰一碰终端，医患双屏交互，医保自费一次付。",
     tags: ["支付宝碰一下", "三种支付方式", "可翻转屏体", "副屏搭配"],
     specs: [
@@ -164,6 +167,7 @@ export const products: ProductDevice[] = [
     downloadName: "桌面T6711下载.pdf",
     series: "SUNJI FT2 医保智能终端",
     brochureSize: "471.5 KB",
+    supportUrl: "https://www.yuque.com/jiatao-ae47m/knowledgebase/fd19scf6ybrfbqv1",
     tagline: "面向医院收费与结算窗口的桌面医保终端，多种安装方式灵活适配柜台环境。",
     tags: ["10″ 高清屏", "3D 结构光刷脸", "多种安装方式", "半自助"],
     specs: [
@@ -176,7 +180,7 @@ export const products: ProductDevice[] = [
       { label: "显示屏", value: '10" 高清屏，1280*800，电容多点触摸' },
       { label: "摄像头", value: "3D 结构光摄像头" },
       { label: "整机重量", value: "930g（裸机）" },
-      { label: "安装方式", value: "玻璃 / 桌面 / 墙面（支持VESA支架）" },
+      { label: "安装方式", value: "玻璃 / 桌面 / ��面（支持VESA支架）" },
       { label: "业务模式", value: "半自助" },
     ],
   },
@@ -192,6 +196,7 @@ export const products: ProductDevice[] = [
     downloadName: "融合T3B0A下载.pdf",
     series: "SUNJI F2H LITE 医保智能终端",
     brochureSize: "415.7 KB",
+    supportUrl: "https://www.yuque.com/jiatao-ae47m/knowledgebase/qwv1032eclv4h49x",
     tagline: "面向院内设备融合组装的轻量医保终端，支持湿手/手套操作，适配复杂医疗环境。",
     tags: ["3D 结构光刷脸", "抗干扰触控", "院内融合组装", "半自助"],
     specs: [
@@ -220,6 +225,7 @@ export const products: ProductDevice[] = [
     downloadName: "手持T6F01下载.pdf",
     series: "SUNJI P2 Xpro 医保手持终端",
     brochureSize: "702.0 KB",
+    supportUrl: "https://www.yuque.com/jiatao-ae47m/knowledgebase/kbulgvqfdqwseofv",
     tagline: "面向移动医保业务的手持终端，内置扫码与打印，随身办理挂号、收费与核验。",
     tags: ["二维扫码头", "内置热敏打印", "3D 结构光刷脸", "全自助 / 半自助"],
     specs: [
@@ -250,6 +256,7 @@ export const products: ProductDevice[] = [
     downloadName: "自助F4E0M下载.pdf",
     series: "SUNJI K2H 医疗智能自助终端",
     brochureSize: "727.2 KB",
+    supportUrl: "https://www.yuque.com/jiatao-ae47m/knowledgebase/tcnlqvtz72i2oz29",
     tagline: "面向医院大厅的自助服务终端，24″ 大屏一体机支持挂壁与立式部署，全流程自助办理。",
     tags: ["24″ FHD 大屏", "小票 + A4 打印", "三色提示灯", "全自助"],
     specs: [

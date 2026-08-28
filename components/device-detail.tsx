@@ -2,7 +2,9 @@
 
 import { useState, useEffect } from "react"
 import { Toaster } from "sonner"
-import { Download, HardDrive } from "lucide-react"
+import { Download, HardDrive, Stethoscope, BedDouble, HeartPulse } from "lucide-react"
+
+const scenarioIcons = [Stethoscope, BedDouble, HeartPulse]
 import type { ProductDevice } from "@/lib/products"
 import { downloadFileWithProgress, fetchFileSize, formatBytes } from "@/lib/file-download"
 import { BackToHomeButton } from "@/components/back-to-home-button"
@@ -23,6 +25,8 @@ export function DeviceDetail({ device, basePath = "../../" }: DeviceDetailProps)
 
   const filePath = isFile ? `${basePath}docs/${device.brochureFile}` : `/docs/${device.brochureFile}`
   const imagePath = isFile ? `${basePath}images/products/${device.image}` : `/images/products/${device.image}`
+  const accessoryPath = (img: string) =>
+    isFile ? `${basePath}images/accessories/${img}` : `/images/accessories/${img}`
 
   // 实时探测彩页真实大小
   useEffect(() => {
@@ -111,8 +115,58 @@ export function DeviceDetail({ device, basePath = "../../" }: DeviceDetailProps)
           </div>
         </div>
 
+        {/* 典型应用场景 */}
+        {device.scenarios && device.scenarios.length > 0 && (
+          <div className="mt-12">
+            <h2 className="mb-5 text-xl font-bold text-foreground">典型应用场景</h2>
+            <div className="grid grid-cols-1 gap-5 sm:grid-cols-3">
+              {device.scenarios.map((sc, i) => {
+                const Icon = scenarioIcons[i % scenarioIcons.length]
+                return (
+                  <div
+                    key={sc.title}
+                    className="flex flex-col rounded-2xl border border-border bg-background p-6 shadow-sm transition-all hover:-translate-y-1 hover:shadow-lg"
+                  >
+                    <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-[#0ab2bd]/10">
+                      <Icon className="h-6 w-6 text-[#0ab2bd]" />
+                    </div>
+                    <h3 className="mb-2 text-base font-bold text-foreground text-pretty">{sc.title}</h3>
+                    <p className="text-sm leading-relaxed text-muted-foreground">{sc.desc}</p>
+                  </div>
+                )
+              })}
+            </div>
+          </div>
+        )}
+
+        {/* 可选配件 */}
+        {device.accessories && device.accessories.length > 0 && (
+          <div className="mt-12">
+            <h2 className="mb-5 text-xl font-bold text-foreground">可选配件</h2>
+            <div className="grid grid-cols-1 gap-5 sm:grid-cols-3">
+              {device.accessories.map((acc) => (
+                <div
+                  key={acc.name}
+                  className="flex flex-col overflow-hidden rounded-2xl border border-border bg-background shadow-sm transition-all hover:-translate-y-1 hover:shadow-lg"
+                >
+                  <div className="flex items-center justify-center bg-muted/30 p-6">
+                    <img
+                      src={accessoryPath(acc.image) || "/placeholder.svg"}
+                      alt={`${device.name} ${acc.name}`}
+                      className="h-44 w-full object-contain"
+                    />
+                  </div>
+                  <div className="border-t border-border px-4 py-3.5 text-center">
+                    <span className="text-base font-semibold text-foreground">{acc.name}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
         {/* 返回首页 */}
-        <div className="mt-10 flex justify-center">
+        <div className="mt-12 flex justify-center">
           <BackToHomeButton basePath={basePath} />
         </div>
       </div>

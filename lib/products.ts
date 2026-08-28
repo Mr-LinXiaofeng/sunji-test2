@@ -5,6 +5,16 @@ export interface ProductSpec {
   value: string
 }
 
+export interface ProductScenario {
+  title: string // 场景标题
+  desc: string // 场景说明
+}
+
+export interface ProductAccessory {
+  name: string // 配件名称
+  image: string // 配件图文件名（位于 /images/accessories 下）
+}
+
 export interface ProductDevice {
   slug: string // 路由标识，如 /device/t671a
   name: string // 设备名称
@@ -18,6 +28,8 @@ export interface ProductDevice {
   series: string // 产品系列/型号别名
   brochureSize: string // 彩页大小兜底值（前端会实时探测覆盖）
   specs: ProductSpec[] // 详细技术参数
+  scenarios?: ProductScenario[] // 典型应用场景（可选）
+  accessories?: ProductAccessory[] // 可选配件（可选）
 }
 
 export const products: ProductDevice[] = [
@@ -45,6 +57,16 @@ export const products: ProductDevice[] = [
       { label: "通信方式", value: "4G / Wi-Fi 2.4G&5G / 蓝牙5.3" },
       { label: "NFC", value: "屏下 NFC" },
       { label: "业务模式", value: "全自助 / 半自助" },
+    ],
+    scenarios: [
+      { title: "基层卫生机构体检与公卫服务", desc: "适配基层卫生机构的体检登记与公共卫生服务场景，快速采集与核验居民信息。" },
+      { title: "病房移动护理与床旁数据采集", desc: "8000mAh 大电池支持全天移动作业，满足病房移动护理与床旁数据采集需求。" },
+      { title: "家庭医生随访与健康管理", desc: "轻便机身与多种身份/支付介质读取，助力家庭医生随访与居民健康管理。" },
+    ],
+    accessories: [
+      { name: "桌面版底座", image: "t671a-desktop-stand.png" },
+      { name: "打印机底座", image: "t671a-printer-stand.png" },
+      { name: "全功能底座", image: "t671a-full-stand.png" },
     ],
   },
   {

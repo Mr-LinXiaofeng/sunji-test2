@@ -107,6 +107,8 @@ export const products: ProductDevice[] = [
       { label: "操作系统", value: "基于安卓11深度定制安全系统" },
       { label: "处理器", value: "8核，最高1.6GHz" },
       { label: "存储器", value: "4GB + 64GB" },
+      { label: "电源适配器", value: "输入：AC100~240V/0.6A；输出：DC12V/2A" },
+      { label: "整机尺寸（长*宽*高）", value: "整机：216mm × 147mm × 356mm；包装：266mm × 200mm × 422mm" },
       { label: "显示屏", value: '8" 高清屏，1280*800，电容多点触摸' },
       { label: "摄像头", value: "3D 结构光摄像头" },
       { label: "支付宝碰一下", value: "支持" },

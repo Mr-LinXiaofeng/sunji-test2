@@ -2,9 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { Toaster } from "sonner"
-import { Download, HardDrive, Stethoscope, BedDouble, HeartPulse } from "lucide-react"
-
-const scenarioIcons = [Stethoscope, BedDouble, HeartPulse]
+import { Download, HardDrive } from "lucide-react"
 import type { ProductDevice } from "@/lib/products"
 import { downloadFileWithProgress, fetchFileSize, formatBytes } from "@/lib/file-download"
 import { BackToHomeButton } from "@/components/back-to-home-button"
@@ -27,6 +25,8 @@ export function DeviceDetail({ device, basePath = "../../" }: DeviceDetailProps)
   const imagePath = isFile ? `${basePath}images/products/${device.image}` : `/images/products/${device.image}`
   const accessoryPath = (img: string) =>
     isFile ? `${basePath}images/accessories/${img}` : `/images/accessories/${img}`
+  const scenarioPath = (img: string) =>
+    isFile ? `${basePath}images/scenarios/${img}` : `/images/scenarios/${img}`
 
   // 实时探测彩页真实大小
   useEffect(() => {
@@ -120,21 +120,24 @@ export function DeviceDetail({ device, basePath = "../../" }: DeviceDetailProps)
           <div className="mt-12">
             <h2 className="mb-5 text-xl font-bold text-foreground">典型应用场景</h2>
             <div className="grid grid-cols-1 gap-5 sm:grid-cols-3">
-              {device.scenarios.map((sc, i) => {
-                const Icon = scenarioIcons[i % scenarioIcons.length]
-                return (
-                  <div
-                    key={sc.title}
-                    className="flex flex-col rounded-2xl border border-border bg-background p-6 shadow-sm transition-all hover:-translate-y-1 hover:shadow-lg"
-                  >
-                    <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-[#0ab2bd]/10">
-                      <Icon className="h-6 w-6 text-[#0ab2bd]" />
-                    </div>
+              {device.scenarios.map((sc) => (
+                <div
+                  key={sc.title}
+                  className="flex flex-col overflow-hidden rounded-2xl border border-border bg-background shadow-sm transition-all hover:-translate-y-1 hover:shadow-lg"
+                >
+                  <div className="aspect-[4/3] w-full overflow-hidden bg-muted/30">
+                    <img
+                      src={scenarioPath(sc.image) || "/placeholder.svg"}
+                      alt={sc.title}
+                      className="h-full w-full object-cover"
+                    />
+                  </div>
+                  <div className="flex flex-col p-5">
                     <h3 className="mb-2 text-base font-bold text-foreground text-pretty">{sc.title}</h3>
                     <p className="text-sm leading-relaxed text-muted-foreground">{sc.desc}</p>
                   </div>
-                )
-              })}
+                </div>
+              ))}
             </div>
           </div>
         )}
@@ -142,7 +145,7 @@ export function DeviceDetail({ device, basePath = "../../" }: DeviceDetailProps)
         {/* 可选配件 */}
         {device.accessories && device.accessories.length > 0 && (
           <div className="mt-12">
-            <h2 className="mb-5 text-xl font-bold text-foreground">可选配件</h2>
+            <h2 className="mb-5 text-xl font-bold text-foreground">可选底座</h2>
             <div className="grid grid-cols-1 gap-5 sm:grid-cols-3">
               {device.accessories.map((acc) => (
                 <div

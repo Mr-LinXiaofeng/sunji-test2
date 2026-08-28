@@ -8,6 +8,7 @@ export interface ProductSpec {
 export interface ProductScenario {
   title: string // 场景标题
   desc: string // 场景说明
+  image: string // 场景图文件名（位于 /images/scenarios 下）
 }
 
 export interface ProductAccessory {
@@ -59,9 +60,21 @@ export const products: ProductDevice[] = [
       { label: "业务模式", value: "全自助 / 半自助" },
     ],
     scenarios: [
-      { title: "基层卫生机构体检与公卫服务", desc: "适配基层卫生机构的体检登记与公共卫生服务场景，快速采集与核验居民信息。" },
-      { title: "病房移动护理与床旁数据采集", desc: "8000mAh 大电池支持全天移动作业，满足病房移动护理与床旁数据采集需求。" },
-      { title: "家庭医生随访与健康管理", desc: "轻便机身与多种身份/支付介质读取，助力家庭医生随访与居民健康管理。" },
+      {
+        title: "基层卫生机构体检与公卫服务",
+        desc: "适配基层卫生机构的体检登记与公共卫生服务场景，快速采集与核验居民信息。",
+        image: "t671a-clinic.png",
+      },
+      {
+        title: "病房移动护理与床旁数据采集",
+        desc: "8000mAh 大电池支持全天移动作业，满足病房移动护理与床旁数据采集需求。",
+        image: "t671a-ward.png",
+      },
+      {
+        title: "家庭医生随访与健康管理",
+        desc: "轻便机身与多种身份/支付介质读取，助力家庭医生随访与居民健康管理。",
+        image: "t671a-homevisit.png",
+      },
     ],
     accessories: [
       { name: "桌面版底座", image: "t671a-desktop-stand.png" },

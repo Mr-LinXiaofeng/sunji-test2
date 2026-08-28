@@ -79,7 +79,7 @@ export function DeviceDetail({ device, basePath = "../../" }: DeviceDetailProps)
                 {device.tags.map((tag) => (
                   <span
                     key={tag}
-                    className="inline-flex items-center rounded-full border border-[#0ab2bd]/20 bg-[#0ab2bd]/10 px-3 py-1 text-xs font-medium text-[#0ab2bd]"
+                    className="inline-flex cursor-default items-center rounded-full border border-[#0ab2bd]/60 bg-[#0ab2bd]/10 px-3 py-1 text-xs font-medium text-[#078089] transition-colors hover:border-[#0ab2bd] hover:bg-[#0ab2bd] hover:text-white"
                   >
                     {tag}
                   </span>
@@ -133,6 +133,7 @@ export function DeviceDetail({ device, basePath = "../../" }: DeviceDetailProps)
               ))}
             </dl>
           </div>
+          <p className="mt-3 text-sm italic text-muted-foreground">*完整参数请下载产品彩页查看</p>
         </div>
 
         {/* 产品特色 */}

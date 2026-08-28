@@ -110,7 +110,7 @@ export function DeviceDetail({ device, basePath = "../../" }: DeviceDetailProps)
                   className={`flex gap-4 px-5 py-3.5 ${i % 2 === 1 ? "bg-muted/30" : "bg-background"}`}
                 >
                   <dt className="w-32 shrink-0 text-sm text-muted-foreground">{spec.label}</dt>
-                  <dd className="text-sm font-medium text-foreground">{spec.value}</dd>
+                  <dd className="whitespace-nowrap text-sm font-medium text-foreground">{spec.value}</dd>
                 </div>
               ))}
             </dl>

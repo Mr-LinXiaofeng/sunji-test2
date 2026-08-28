@@ -68,7 +68,24 @@ export function DeviceDetail({ device, basePath = "../../" }: DeviceDetailProps)
           {/* 概要信息 */}
           <div>
             <p className="mb-2 text-sm font-medium text-[#0ab2bd]">{device.series}</p>
-            <h1 className="mb-4 text-3xl font-bold text-foreground md:text-4xl">{device.name}</h1>
+            <h1 className="mb-3 text-3xl font-bold text-foreground md:text-4xl">{device.name}</h1>
+
+            {device.tagline && (
+              <p className="mb-4 text-sm leading-relaxed text-muted-foreground text-pretty">{device.tagline}</p>
+            )}
+
+            {device.tags && device.tags.length > 0 && (
+              <div className="mb-6 flex flex-wrap gap-2">
+                {device.tags.map((tag) => (
+                  <span
+                    key={tag}
+                    className="inline-flex items-center rounded-full border border-[#0ab2bd]/20 bg-[#0ab2bd]/10 px-3 py-1 text-xs font-medium text-[#0ab2bd]"
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            )}
 
             <dl className="mb-6 grid grid-cols-2 gap-x-4 gap-y-3">
               {[
@@ -77,9 +94,9 @@ export function DeviceDetail({ device, basePath = "../../" }: DeviceDetailProps)
                 { label: "存储器", value: device.storage },
                 { label: "业务模式", value: device.businessMode },
               ].map((item) => (
-                <div key={item.label} className="rounded-xl border border-border bg-background p-3">
-                  <dt className="text-xs text-muted-foreground">{item.label}</dt>
-                  <dd className="mt-0.5 text-sm font-semibold text-foreground">{item.value}</dd>
+                <div key={item.label} className="rounded-xl border border-[#0ab2bd]/20 bg-[#0ab2bd]/5 p-3">
+                  <dt className="text-sm font-medium text-muted-foreground">{item.label}</dt>
+                  <dd className="mt-1 text-sm font-semibold text-foreground">{item.value}</dd>
                 </div>
               ))}
             </dl>
@@ -99,18 +116,19 @@ export function DeviceDetail({ device, basePath = "../../" }: DeviceDetailProps)
           </div>
         </div>
 
-        {/* 详细技术参数 */}
+        {/* 部分技术参数 */}
         <div className="mt-12">
-          <h2 className="mb-5 text-xl font-bold text-foreground">详细技术参数</h2>
+          <h2 className="mb-5 text-xl font-bold text-foreground">部分技术参数</h2>
           <div className="overflow-hidden rounded-2xl border border-border">
             <dl className="divide-y divide-border">
-              {device.specs.map((spec, i) => (
-                <div
-                  key={spec.label}
-                  className={`flex gap-4 px-5 py-3.5 ${i % 2 === 1 ? "bg-muted/30" : "bg-background"}`}
-                >
-                  <dt className="w-48 shrink-0 whitespace-nowrap text-sm text-muted-foreground">{spec.label}</dt>
-                  <dd className="whitespace-pre-line text-sm font-medium text-foreground">{spec.value}</dd>
+              {device.specs.map((spec) => (
+                <div key={spec.label} className="flex">
+                  <dt className="w-48 shrink-0 whitespace-nowrap bg-muted/60 px-5 py-3.5 text-sm text-muted-foreground">
+                    {spec.label}
+                  </dt>
+                  <dd className="flex-1 whitespace-pre-line border-l border-border bg-background px-5 py-3.5 text-sm font-medium text-foreground">
+                    {spec.value}
+                  </dd>
                 </div>
               ))}
             </dl>

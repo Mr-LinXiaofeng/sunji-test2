@@ -252,7 +252,7 @@ export const products: ProductDevice[] = [
       { label: "摄像头", value: "3D 结构光摄像头" },
       {
         label: "打印机",
-        value: "小票打印机：80mm 热敏打印机（兼容58）    A4打印机（选配）：支持非税票据打印，A4/A5 激光打印",
+        value: "小票打印机：80mm 热敏打印机（兼容58）\nA4打印机（选配）：支持非税票据打印，A4/A5 激光打印",
       },
       { label: "底座（选配）", value: "立式支架，支持可选" },
       { label: "社保卡（选配）", value: "支持可选" },

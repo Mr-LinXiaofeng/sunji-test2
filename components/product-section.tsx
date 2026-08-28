@@ -7,7 +7,7 @@ interface FAQItem {
   id: number
   title: string
   subtitle?: string
-  subtitleLink?: { label: string; url: string } // 副标题内可单独跳转的链接
+  subtitleLink?: { prefix?: string; label: string; url: string } // 副标题内可单独跳转的链接（prefix 为普通文字，label 为带下划线的链接）
   href: string
   icon: React.ReactNode
   accentColor: string
@@ -18,7 +18,11 @@ const faqItems: FAQItem[] = [
     id: 1,
   title: "自动激活绑定",
   subtitle: "适用机型：T3B0A、T3B0B、T6F01",
-  subtitleLink: { label: "自动激活绑定二维码生成网址：http://8.154.41.111/bindQr/", url: "http://8.154.41.111/bindQr/" },
+  subtitleLink: {
+    prefix: "自动激活绑定二维码生成网址：",
+    label: "http://8.154.41.111/bindQr/",
+    url: "http://8.154.41.111/bindQr/",
+  },
     href: "https://www.yuque.com/jiatao-ae47m/knowledgebase/ozxswr5x8vmu99y3",
     icon: <Zap className="w-6 h-6" />,
     accentColor: "from-[#0ab2bd]/10 to-[#0ab2bd]/5 border-[#0ab2bd]/30 hover:border-[#0ab2bd]",
@@ -116,6 +120,7 @@ function FAQCard({ item }: { item: FAQItem }) {
               )}
               {item.subtitleLink && (
                 <p className="mt-1 break-words text-sm text-muted-foreground">
+                  {item.subtitleLink.prefix}
                   <span
                     role="link"
                     tabIndex={0}

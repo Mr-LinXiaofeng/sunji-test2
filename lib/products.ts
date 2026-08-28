@@ -254,7 +254,7 @@ export const products: ProductDevice[] = [
         label: "打印机",
         value: "小票打印机：80mm 热敏打印机（兼容58）\nA4打印机（选配）：支持非税票据打印，A4/A5 激光打印",
       },
-      { label: "底座（选配）", value: "立式支架，支持可选" },
+      { label: "底座（选配）", value: "立式支架" },
       { label: "社保卡（选配）", value: "支持可选" },
       { label: "身份证/非接卡", value: "支持二代身份证及 M0/M1/CPU 非接卡" },
       { label: "业务模式", value: "全自助（支持挂壁 / 立式扩展）" },

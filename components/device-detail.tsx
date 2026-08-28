@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { Toaster } from "sonner"
-import { Download, HardDrive, LifeBuoy } from "lucide-react"
+import { Download, HardDrive, BookOpen } from "lucide-react"
 import type { ProductDevice } from "@/lib/products"
 import { downloadFileWithProgress, fetchFileSize, formatBytes } from "@/lib/file-download"
 import { BackToHomeButton } from "@/components/back-to-home-button"
@@ -121,7 +121,7 @@ export function DeviceDetail({ device, basePath = "../../" }: DeviceDetailProps)
                   rel="noopener noreferrer"
                   className="inline-flex items-center justify-center gap-2 rounded-xl border border-[#0ab2bd] px-6 py-3.5 text-base font-semibold text-[#0ab2bd] transition-colors hover:bg-[#0ab2bd] hover:text-white"
                 >
-                  <LifeBuoy className="h-5 w-5" />
+                  <BookOpen className="h-5 w-5" />
                   获取技术支持
                 </a>
               )}

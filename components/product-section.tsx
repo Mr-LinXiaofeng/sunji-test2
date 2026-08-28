@@ -7,6 +7,7 @@ interface FAQItem {
   id: number
   title: string
   subtitle?: string
+  subtitleLink?: { label: string; url: string } // 副标题内可单独跳转的链接
   href: string
   icon: React.ReactNode
   accentColor: string
@@ -16,7 +17,8 @@ const faqItems: FAQItem[] = [
   {
     id: 1,
   title: "自动激活绑定",
-  subtitle: "适用机型：T3B0A、T3B0B、T6F01\n自动激活绑定二维码生成网址：http://8.154.41.111/bindQr/",
+  subtitle: "适用机型：T3B0A、T3B0B、T6F01",
+  subtitleLink: { label: "自动激活绑定二维码生成网址：http://8.154.41.111/bindQr/", url: "http://8.154.41.111/bindQr/" },
     href: "https://www.yuque.com/jiatao-ae47m/knowledgebase/ozxswr5x8vmu99y3",
     icon: <Zap className="w-6 h-6" />,
     accentColor: "from-[#0ab2bd]/10 to-[#0ab2bd]/5 border-[#0ab2bd]/30 hover:border-[#0ab2bd]",
@@ -110,6 +112,29 @@ function FAQCard({ item }: { item: FAQItem }) {
               {item.subtitle && (
                 <p className="mt-1 whitespace-pre-line break-words text-sm text-muted-foreground line-clamp-3">
                   {item.subtitle}
+                </p>
+              )}
+              {item.subtitleLink && (
+                <p className="mt-1 break-words text-sm text-muted-foreground">
+                  <span
+                    role="link"
+                    tabIndex={0}
+                    onClick={(e) => {
+                      e.preventDefault()
+                      e.stopPropagation()
+                      window.open(item.subtitleLink!.url, "_blank", "noopener,noreferrer")
+                    }}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" || e.key === " ") {
+                        e.preventDefault()
+                        e.stopPropagation()
+                        window.open(item.subtitleLink!.url, "_blank", "noopener,noreferrer")
+                      }
+                    }}
+                    className="cursor-pointer text-[#0ab2bd] underline underline-offset-2 hover:text-[#089aa3]"
+                  >
+                    {item.subtitleLink.label}
+                  </span>
                 </p>
               )}
             </div>

@@ -15,8 +15,8 @@ interface FAQItem {
 const faqItems: FAQItem[] = [
   {
     id: 1,
-    title: "自动激活绑定",
-    subtitle: "适用机型：T3B0A、T3B0B、T6F01",
+  title: "自动激活绑定",
+  subtitle: "适用机型：T3B0A、T3B0B、T6F01\n自动激活绑定二维码生成网址：http://8.154.41.111/bindQr/",
     href: "https://www.yuque.com/jiatao-ae47m/knowledgebase/ozxswr5x8vmu99y3",
     icon: <Zap className="w-6 h-6" />,
     accentColor: "from-[#0ab2bd]/10 to-[#0ab2bd]/5 border-[#0ab2bd]/30 hover:border-[#0ab2bd]",
@@ -108,7 +108,7 @@ function FAQCard({ item }: { item: FAQItem }) {
                 {item.title}
               </h3>
               {item.subtitle && (
-                <p className="mt-1 text-sm text-muted-foreground line-clamp-2">
+                <p className="mt-1 whitespace-pre-line break-words text-sm text-muted-foreground line-clamp-3">
                   {item.subtitle}
                 </p>
               )}

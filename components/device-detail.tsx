@@ -152,11 +152,11 @@ export function DeviceDetail({ device, basePath = "../../" }: DeviceDetailProps)
                   key={acc.name}
                   className="flex flex-col overflow-hidden rounded-2xl border border-border bg-background shadow-sm transition-all hover:-translate-y-1 hover:shadow-lg"
                 >
-                  <div className="flex items-center justify-center bg-muted/30 p-6">
+                  <div className="flex h-72 items-center justify-center bg-muted/30 p-3">
                     <img
                       src={accessoryPath(acc.image) || "/placeholder.svg"}
                       alt={`${device.name} ${acc.name}`}
-                      className="h-44 w-full object-contain"
+                      className="h-full w-full object-contain"
                     />
                   </div>
                   <div className="border-t border-border px-4 py-3.5 text-center">

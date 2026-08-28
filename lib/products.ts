@@ -164,7 +164,7 @@ export const products: ProductDevice[] = [
       { label: "处理器", value: "8核，1.8GHz" },
       { label: "存储器", value: "64GB ROM + 4GB RAM" },
       { label: "电源适配器", value: "输入：AC100~240V/0.6A；输出：DC12V/2A" },
-      { label: "整机尺寸（长*宽*高）", value: "主机包装：380.1mm × 246.88mm × 229.3mm" },
+      { label: "整机尺寸（长*宽*高）", value: "主机包装：38.01mm × 246.88mm × 229.3mm" },
       { label: "显示屏", value: '10" 高清屏，1280*800，电容多点触摸' },
       { label: "摄像头", value: "3D 结构光摄像头" },
       { label: "整机重量", value: "930g（裸机）" },

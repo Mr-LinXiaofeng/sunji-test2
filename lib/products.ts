@@ -11,6 +11,12 @@ export interface ProductScenario {
   image: string // 场景图文件名（位于 /images/scenarios 下）
 }
 
+export interface ProductFeature {
+  title: string // 特色标题
+  desc: string // 特色说明
+  image: string // 特色图文件名（位于 /images/features 下）
+}
+
 export interface ProductAccessory {
   name: string // 配件名称
   image: string // 配件图文件名（位于 /images/accessories 下）
@@ -29,7 +35,9 @@ export interface ProductDevice {
   series: string // 产品系列/型号别名
   brochureSize: string // 彩页大小兜底值（前端会实时探测覆盖）
   specs: ProductSpec[] // 详细技术参数
-  scenarios?: ProductScenario[] // 典型应用场景（可选）
+  features?: ProductFeature[] // 产品特色（可选）
+  scenarios?: ProductScenario[] // 应用场景（可选）
+  scenariosTitle?: string // 应用场景标题（可选，默认"典型应用场景"）
   accessories?: ProductAccessory[] // 可选配件（可选）
 }
 
@@ -104,6 +112,36 @@ export const products: ProductDevice[] = [
       { label: "支付宝碰一下", value: "支持" },
       { label: "整机重量", value: "约 1475g（裸机）" },
       { label: "业务模式", value: "半自助" },
+    ],
+    features: [
+      {
+        title: "副屏搭配",
+        desc: "搭配独立副屏，实现医患双向交互，辅助医保结算与信息展示，提升窗口服务效率。",
+        image: "t3b0b-subscreen.png",
+      },
+      {
+        title: "三种支付方式",
+        desc: "支持支付宝碰一下小蓝环、扫码窗与人脸识别摄像头三种支付方式，医保自费一次付。",
+        image: "t3b0b-payment.png",
+      },
+      {
+        title: "可翻转屏体",
+        desc: "屏体支持 15°–75° 多角度翻转调节，适配不同医疗柜台高度，符合人体工学操作。",
+        image: "t3b0b-flip.png",
+      },
+    ],
+    scenariosTitle: "使用场景",
+    scenarios: [
+      {
+        title: "医院窗口",
+        desc: "部署于医院挂号、收费、取药等业务窗口，支持建卡关联与医保结算，加速患者就诊全流程。",
+        image: "t3b0b-hospital.png",
+      },
+      {
+        title: "药店柜台",
+        desc: "适配药店柜台购药结算场景，医患面对面完成刷脸/扫码/碰一下支付，操作便捷高效。",
+        image: "t3b0b-pharmacy.png",
+      },
     ],
   },
   {
@@ -193,7 +231,7 @@ export const products: ProductDevice[] = [
     brochureSize: "727.2 KB",
     specs: [
       { label: "认证型号", value: "F4E0M" },
-      { label: "操作系统", value: "安卓9 安全操作系统" },
+      { label: "操作系统", value: "安卓9 安全操作系��" },
       { label: "处理器", value: "ARM 6核，可达1.8GHz" },
       { label: "存储器", value: "32GB ROM + 4GB RAM" },
       { label: "显示屏", value: '24" FHD，1080*1920，电容多点触摸' },

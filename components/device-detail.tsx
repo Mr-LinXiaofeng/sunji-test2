@@ -27,6 +27,8 @@ export function DeviceDetail({ device, basePath = "../../" }: DeviceDetailProps)
     isFile ? `${basePath}images/accessories/${img}` : `/images/accessories/${img}`
   const scenarioPath = (img: string) =>
     isFile ? `${basePath}images/scenarios/${img}` : `/images/scenarios/${img}`
+  const featurePath = (img: string) =>
+    isFile ? `${basePath}images/features/${img}` : `/images/features/${img}`
 
   // 实时探测彩页真实大小
   useEffect(() => {
@@ -115,11 +117,42 @@ export function DeviceDetail({ device, basePath = "../../" }: DeviceDetailProps)
           </div>
         </div>
 
-        {/* 典型应用场景 */}
+        {/* 产品特色 */}
+        {device.features && device.features.length > 0 && (
+          <div className="mt-12">
+            <h2 className="mb-5 text-xl font-bold text-foreground">产品特色</h2>
+            <div className="grid grid-cols-1 gap-5 sm:grid-cols-3">
+              {device.features.map((ft) => (
+                <div
+                  key={ft.title}
+                  className="flex flex-col overflow-hidden rounded-2xl border border-border bg-background shadow-sm transition-all hover:-translate-y-1 hover:shadow-lg"
+                >
+                  <div className="flex h-56 items-center justify-center bg-muted/30 p-4">
+                    <img
+                      src={featurePath(ft.image) || "/placeholder.svg"}
+                      alt={ft.title}
+                      className="h-full w-full object-contain"
+                    />
+                  </div>
+                  <div className="flex flex-col border-t border-border p-5">
+                    <h3 className="mb-2 text-base font-bold text-foreground text-pretty">{ft.title}</h3>
+                    <p className="text-sm leading-relaxed text-muted-foreground">{ft.desc}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* 应用场景 */}
         {device.scenarios && device.scenarios.length > 0 && (
           <div className="mt-12">
-            <h2 className="mb-5 text-xl font-bold text-foreground">典型应用场景</h2>
-            <div className="grid grid-cols-1 gap-5 sm:grid-cols-3">
+            <h2 className="mb-5 text-xl font-bold text-foreground">{device.scenariosTitle ?? "典型应用场景"}</h2>
+            <div
+              className={`grid grid-cols-1 gap-5 ${
+                device.scenarios.length === 2 ? "sm:grid-cols-2" : "sm:grid-cols-3"
+              }`}
+            >
               {device.scenarios.map((sc) => (
                 <div
                   key={sc.title}

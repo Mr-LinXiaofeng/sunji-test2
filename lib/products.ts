@@ -50,7 +50,7 @@ export const products: ProductDevice[] = [
     slug: "t671a",
     name: "商捷平板终端",
     image: "t671a.png",
-    images: ["t671a-t.png", "t671a-front-back-t.png"],
+    images: ["t671a.png", "t671a-front-back.jpg"],
     model: "T671A",
     os: "安卓13，商米OS",
     storage: "4G + 64G",

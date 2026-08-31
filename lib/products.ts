@@ -162,7 +162,7 @@ export const products: ProductDevice[] = [
     slug: "t6711",
     name: "商捷桌面终端",
     image: "t6711.png",
-    images: ["t6711-front-side.jpg", "t6711-front.jpg", "t6711-back.jpg"],
+    images: ["t6711-front-side.jpg", "t6711-front.jpg", "t6711-side.jpg", "t6711-back.jpg"],
     model: "T6711",
     os: "安卓8，蚂蚁OS",
     storage: "4G + 64G",

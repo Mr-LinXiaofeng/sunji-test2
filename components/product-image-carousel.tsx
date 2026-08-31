@@ -12,28 +12,59 @@ export function ProductImageCarousel({ images, alt }: ProductImageCarouselProps)
   const [current, setCurrent] = useState(0)
   const [zoomed, setZoomed] = useState(false)
   const [scale, setScale] = useState(1) // 大图弹窗的缩放倍数
+  const [offset, setOffset] = useState({ x: 0, y: 0 }) // 放大后的平移位置
   const overlayRef = useRef<HTMLDivElement>(null)
+  const dragging = useRef(false)
+  const dragStart = useRef({ x: 0, y: 0, ox: 0, oy: 0 })
   const total = images.length
 
   const MIN_SCALE = 1
   const MAX_SCALE = 4
 
-  const goPrev = () => {
+  const resetView = () => {
     setScale(1)
+    setOffset({ x: 0, y: 0 })
+  }
+
+  const goPrev = () => {
+    resetView()
     setCurrent((i) => (i - 1 + total) % total)
   }
   const goNext = () => {
-    setScale(1)
+    resetView()
     setCurrent((i) => (i + 1) % total)
   }
 
   const openZoom = () => {
-    setScale(1)
+    resetView()
     setZoomed(true)
   }
   const closeZoom = () => {
-    setScale(1)
+    resetView()
     setZoomed(false)
+  }
+
+  // 拖拽平移（仅放大时可用）
+  const onImgPointerDown = (e: React.PointerEvent) => {
+    if (scale <= 1) return
+    e.preventDefault()
+    e.stopPropagation()
+    dragging.current = true
+    dragStart.current = { x: e.clientX, y: e.clientY, ox: offset.x, oy: offset.y }
+    ;(e.target as HTMLElement).setPointerCapture(e.pointerId)
+  }
+  const onImgPointerMove = (e: React.PointerEvent) => {
+    if (!dragging.current) return
+    setOffset({
+      x: dragStart.current.ox + (e.clientX - dragStart.current.x),
+      y: dragStart.current.oy + (e.clientY - dragStart.current.y),
+    })
+  }
+  const onImgPointerUp = (e: React.PointerEvent) => {
+    dragging.current = false
+    try {
+      ;(e.target as HTMLElement).releasePointerCapture(e.pointerId)
+    } catch {}
   }
 
   // 仅一张图时不显示切换控件
@@ -57,7 +88,11 @@ export function ProductImageCarousel({ images, alt }: ProductImageCarouselProps)
     const el = overlayRef.current
     const onWheel = (e: WheelEvent) => {
       e.preventDefault()
-      setScale((s) => Math.min(MAX_SCALE, Math.max(MIN_SCALE, s - e.deltaY * 0.0015)))
+      setScale((s) => {
+        const next = Math.min(MAX_SCALE, Math.max(MIN_SCALE, s - e.deltaY * 0.0015))
+        if (next <= 1) setOffset({ x: 0, y: 0 })
+        return next
+      })
     }
     el?.addEventListener("wheel", onWheel, { passive: false })
 
@@ -151,15 +186,22 @@ export function ProductImageCarousel({ images, alt }: ProductImageCarouselProps)
 
           {/* 缩放提示 */}
           <div className="pointer-events-none absolute left-4 top-4 z-10 rounded-full bg-white/10 px-3 py-1.5 text-xs font-medium text-white">
-            滚动鼠标滚轮可放大 / 缩小（{Math.round(scale * 100)}%）
+            滚轮缩放（{Math.round(scale * 100)}%）{scale > 1 && " · 按住可拖动查看细节"}
           </div>
 
           <img
             src={images[current] || "/placeholder.svg"}
             alt={`${alt}（第 ${current + 1} / ${total} 张）`}
             onClick={(e) => e.stopPropagation()}
-            style={{ transform: `scale(${scale})` }}
-            className="max-h-full max-w-full object-contain transition-transform duration-100 ease-out"
+            onPointerDown={onImgPointerDown}
+            onPointerMove={onImgPointerMove}
+            onPointerUp={onImgPointerUp}
+            style={{
+              transform: `translate(${offset.x}px, ${offset.y}px) scale(${scale})`,
+              cursor: scale > 1 ? (dragging.current ? "grabbing" : "grab") : "default",
+              transition: dragging.current ? "none" : "transform 100ms ease-out",
+            }}
+            className="max-h-full max-w-full touch-none select-none object-contain"
             draggable={false}
           />
 

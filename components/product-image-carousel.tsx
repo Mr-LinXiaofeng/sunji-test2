@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { ChevronLeft, ChevronRight, X, ZoomIn } from "lucide-react"
 
 interface ProductImageCarouselProps {
@@ -11,10 +11,30 @@ interface ProductImageCarouselProps {
 export function ProductImageCarousel({ images, alt }: ProductImageCarouselProps) {
   const [current, setCurrent] = useState(0)
   const [zoomed, setZoomed] = useState(false)
+  const [scale, setScale] = useState(1) // 大图弹窗的缩放倍数
+  const overlayRef = useRef<HTMLDivElement>(null)
   const total = images.length
 
-  const goPrev = () => setCurrent((i) => (i - 1 + total) % total)
-  const goNext = () => setCurrent((i) => (i + 1) % total)
+  const MIN_SCALE = 1
+  const MAX_SCALE = 4
+
+  const goPrev = () => {
+    setScale(1)
+    setCurrent((i) => (i - 1 + total) % total)
+  }
+  const goNext = () => {
+    setScale(1)
+    setCurrent((i) => (i + 1) % total)
+  }
+
+  const openZoom = () => {
+    setScale(1)
+    setZoomed(true)
+  }
+  const closeZoom = () => {
+    setScale(1)
+    setZoomed(false)
+  }
 
   // 仅一张图时不显示切换控件
   const showControls = total > 1
@@ -25,14 +45,26 @@ export function ProductImageCarousel({ images, alt }: ProductImageCarouselProps)
     const prevOverflow = document.body.style.overflow
     document.body.style.overflow = "hidden"
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setZoomed(false)
+      if (e.key === "Escape") closeZoom()
       else if (e.key === "ArrowLeft" && showControls) goPrev()
       else if (e.key === "ArrowRight" && showControls) goNext()
+      else if (e.key === "+" || e.key === "=") setScale((s) => Math.min(MAX_SCALE, s + 0.25))
+      else if (e.key === "-") setScale((s) => Math.max(MIN_SCALE, s - 0.25))
     }
     window.addEventListener("keydown", onKey)
+
+    // 原生非 passive 的滚轮监听，确保 preventDefault 生效、可靠缩放
+    const el = overlayRef.current
+    const onWheel = (e: WheelEvent) => {
+      e.preventDefault()
+      setScale((s) => Math.min(MAX_SCALE, Math.max(MIN_SCALE, s - e.deltaY * 0.0015)))
+    }
+    el?.addEventListener("wheel", onWheel, { passive: false })
+
     return () => {
       document.body.style.overflow = prevOverflow
       window.removeEventListener("keydown", onKey)
+      el?.removeEventListener("wheel", onWheel)
     }
   }, [zoomed, showControls])
 
@@ -41,7 +73,7 @@ export function ProductImageCarousel({ images, alt }: ProductImageCarouselProps)
       <div className="relative flex items-center justify-center rounded-xl border border-border bg-muted/50 p-8">
         <button
           type="button"
-          onClick={() => setZoomed(true)}
+          onClick={openZoom}
           aria-label="点击查看大图"
           className="flex w-full cursor-zoom-in items-center justify-center"
         >
@@ -100,27 +132,35 @@ export function ProductImageCarousel({ images, alt }: ProductImageCarouselProps)
       {/* 大图弹窗 */}
       {zoomed && (
         <div
+          ref={overlayRef}
           role="dialog"
           aria-modal="true"
           aria-label="产品大图预览"
-          onClick={() => setZoomed(false)}
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 md:p-10"
+          onClick={closeZoom}
+          className="fixed inset-0 z-50 flex items-center justify-center overflow-hidden bg-black/80 p-4 md:p-10"
         >
           {/* 关闭按钮 */}
           <button
             type="button"
-            onClick={() => setZoomed(false)}
+            onClick={closeZoom}
             aria-label="关闭大图"
-            className="absolute right-4 top-4 flex h-11 w-11 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/25"
+            className="absolute right-4 top-4 z-10 flex h-11 w-11 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/25"
           >
             <X className="h-6 w-6" />
           </button>
+
+          {/* 缩放提示 */}
+          <div className="pointer-events-none absolute left-4 top-4 z-10 rounded-full bg-white/10 px-3 py-1.5 text-xs font-medium text-white">
+            滚动鼠标滚轮可放大 / 缩小（{Math.round(scale * 100)}%）
+          </div>
 
           <img
             src={images[current] || "/placeholder.svg"}
             alt={`${alt}（第 ${current + 1} / ${total} 张）`}
             onClick={(e) => e.stopPropagation()}
-            className="max-h-full max-w-full cursor-default object-contain"
+            style={{ transform: `scale(${scale})` }}
+            className="max-h-full max-w-full object-contain transition-transform duration-100 ease-out"
+            draggable={false}
           />
 
           {showControls && (

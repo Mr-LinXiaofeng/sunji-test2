@@ -102,6 +102,7 @@ export const products: ProductDevice[] = [
     slug: "t3b0b",
     name: "商捷碰一碰终端",
     image: "t3b0b.png",
+    images: ["t3b0b.png", "t3b0b-front.jpg", "t3b0b-side.jpg", "t3b0b-back.jpg"],
     model: "T3B0B",
     os: "安卓11，商米OS",
     storage: "4G + 64G",

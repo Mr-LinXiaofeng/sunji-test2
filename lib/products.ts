@@ -102,7 +102,7 @@ export const products: ProductDevice[] = [
     slug: "t3b0b",
     name: "商捷碰一碰终端",
     image: "t3b0b.png",
-    images: ["t3b0b.png", "t3b0b-front.jpg", "t3b0b-side.jpg", "t3b0b-back.jpg"],
+    images: ["t3b0b-front-side.jpg", "t3b0b-front.jpg", "t3b0b-side.jpg", "t3b0b-back.jpg"],
     model: "T3B0B",
     os: "安卓11，商米OS",
     storage: "4G + 64G",
@@ -176,7 +176,7 @@ export const products: ProductDevice[] = [
     specs: [
       { label: "认证型号", value: "T6711" },
       { label: "操作系统", value: "安卓8.1（蚂蚁OS）" },
-      { label: "处理器", value: "8核，1.8GHz" },
+      { label: "��理器", value: "8核，1.8GHz" },
       { label: "存储器", value: "64GB ROM + 4GB RAM" },
       { label: "电源适配器", value: "输入：AC100~240V/0.6A；输出：DC12V/2A" },
       { label: "整机尺寸（长*宽*高）", value: "主机包装：38.01mm × 246.88mm × 229.3mm" },

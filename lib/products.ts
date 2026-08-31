@@ -26,6 +26,7 @@ export interface ProductDevice {
   slug: string // 路由标识，如 /device/t671a
   name: string // 设备名称
   image: string // 产品图文件名（位于 /images/products 下）
+  images?: string[] // 多张产品图文件名（位于 /images/products 下，用于轮播；缺省则仅用 image）
   model: string // 认证型号
   os: string // 操作系统
   storage: string // 存储器
@@ -49,6 +50,7 @@ export const products: ProductDevice[] = [
     slug: "t671a",
     name: "商捷平板终端",
     image: "t671a.png",
+    images: ["t671a.png", "t671a-front-back.jpg"],
     model: "T671A",
     os: "安卓13，商米OS",
     storage: "4G + 64G",

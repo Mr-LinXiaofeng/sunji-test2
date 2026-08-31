@@ -6,6 +6,7 @@ import { Download, HardDrive, BookOpen } from "lucide-react"
 import type { ProductDevice } from "@/lib/products"
 import { downloadFileWithProgress, fetchFileSize, formatBytes } from "@/lib/file-download"
 import { BackToHomeButton } from "@/components/back-to-home-button"
+import { ProductImageCarousel } from "@/components/product-image-carousel"
 
 interface DeviceDetailProps {
   device: ProductDevice
@@ -22,7 +23,10 @@ export function DeviceDetail({ device, basePath = "../../" }: DeviceDetailProps)
   }, [])
 
   const filePath = isFile ? `${basePath}docs/${device.brochureFile}` : `/docs/${device.brochureFile}`
-  const imagePath = isFile ? `${basePath}images/products/${device.image}` : `/images/products/${device.image}`
+  const productImgPath = (img: string) =>
+    isFile ? `${basePath}images/products/${img}` : `/images/products/${img}`
+  // 有多图则用多图轮播，否则回退到单图
+  const carouselImages = (device.images && device.images.length > 0 ? device.images : [device.image]).map(productImgPath)
   const accessoryPath = (img: string) =>
     isFile ? `${basePath}images/accessories/${img}` : `/images/accessories/${img}`
   const scenarioPath = (img: string) =>
@@ -56,14 +60,8 @@ export function DeviceDetail({ device, basePath = "../../" }: DeviceDetailProps)
       {/* 顶部：产品图 + 概要 + 下载 */}
       <div className="mx-auto max-w-5xl">
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2 md:items-center">
-          {/* 产品图 */}
-          <div className="flex items-center justify-center rounded-3xl border border-border bg-muted/30 p-8">
-            <img
-              src={imagePath || "/placeholder.svg"}
-              alt={`${device.name} 产品图`}
-              className="max-h-80 w-full object-contain"
-            />
-          </div>
+          {/* 产品图轮播 */}
+          <ProductImageCarousel images={carouselImages} alt={`${device.name} 产品图`} />
 
           {/* 概要信息 */}
           <div>

@@ -222,6 +222,7 @@ export const products: ProductDevice[] = [
     slug: "t6f01",
     name: "商捷手持终端",
     image: "t6f01.png",
+    images: ["t6f01-t.png", "t6f01-multi-t.png"],
     model: "T6F01",
     os: "安卓11，商米OS",
     storage: "2G + 64G",
@@ -267,7 +268,7 @@ export const products: ProductDevice[] = [
     specs: [
       { label: "认证型号", value: "F4E0M" },
       { label: "操作系统", value: "安卓9 安全操作系统" },
-      { label: "处理器", value: "ARM 6核，可达1.8GHz" },
+      { label: "处理器", value: "ARM 6核，���达1.8GHz" },
       { label: "存储器", value: "32GB ROM + 4GB RAM" },
       { label: "电源适配器", value: "输入：AC110~240V/50Hz" },
       { label: "整机尺寸（长*宽*高）", value: "主机包装：长 523mm × �� 1110mm × 高 371mm" },

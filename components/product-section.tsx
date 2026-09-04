@@ -104,22 +104,22 @@ function FAQCard({ item }: { item: FAQItem }) {
       className="block group"
     >
       <Card className={`h-full transition-all duration-300 border-2 bg-gradient-to-br ${item.accentColor} hover:shadow-lg hover:-translate-y-1`}>
-        <CardContent className="p-5">
-          <div className="flex items-start gap-4">
-            <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-white/80 shadow-sm flex items-center justify-center text-[#0ab2bd] group-hover:scale-110 transition-transform duration-300">
+        <CardContent className="p-3.5 sm:p-5">
+          <div className="flex items-start gap-3 sm:gap-4">
+            <div className="flex-shrink-0 w-9 h-9 sm:w-12 sm:h-12 rounded-xl bg-white/80 shadow-sm flex items-center justify-center text-[#0ab2bd] group-hover:scale-110 transition-transform duration-300 [&_svg]:w-4 [&_svg]:h-4 sm:[&_svg]:w-6 sm:[&_svg]:h-6">
               {item.icon}
             </div>
             <div className="flex-1 min-w-0">
-              <h3 className="text-lg font-bold text-foreground group-hover:text-[#0ab2bd] transition-colors line-clamp-1">
+              <h3 className="text-sm sm:text-lg font-bold text-foreground group-hover:text-[#0ab2bd] transition-colors leading-snug line-clamp-2">
                 {item.title}
               </h3>
               {item.subtitle && (
-                <p className="mt-1 whitespace-pre-line break-words text-sm text-muted-foreground line-clamp-3">
+                <p className="mt-1 whitespace-pre-line break-words text-xs sm:text-sm text-muted-foreground line-clamp-3">
                   {item.subtitle}
                 </p>
               )}
               {item.subtitleLink && (
-                <p className="mt-1 break-words text-sm text-muted-foreground">
+                <p className="mt-1 break-words text-xs sm:text-sm text-muted-foreground">
                   {item.subtitleLink.prefix}
                   <span
                     role="link"
@@ -169,7 +169,7 @@ export function ProductSection() {
         </div>
         
         {/* 移动端: 单列布局 */}
-        <div className="md:hidden space-y-4">
+        <div className="md:hidden space-y-3">
           {faqItems.map((item) => (
             <FAQCard key={item.id} item={item} />
           ))}

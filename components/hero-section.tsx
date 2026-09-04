@@ -34,11 +34,11 @@ export function HeroSection() {
           href="https://www.yuque.com/jiatao-ae47m/knowledgebase"
           target="_blank"
           rel="noopener noreferrer"
-          className="group inline-flex items-center justify-center gap-3 rounded-xl bg-[#0ab2bd] px-20 py-6 text-2xl font-bold text-white shadow-[0_8px_30px_rgba(10,178,189,0.4)] transition-all duration-300 hover:bg-[#099aa3] hover:shadow-[0_12px_40px_rgba(10,178,189,0.5)] animate-breathe"
+          className="group inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-xl bg-[#0ab2bd] px-8 py-4 text-base font-bold text-white shadow-[0_8px_30px_rgba(10,178,189,0.4)] transition-all duration-300 hover:bg-[#099aa3] hover:shadow-[0_12px_40px_rgba(10,178,189,0.5)] animate-breathe sm:gap-3 sm:px-20 sm:py-6 sm:text-2xl"
         >
-          <BookOpen className="w-8 h-8" />
+          <BookOpen className="w-5 h-5 sm:w-8 sm:h-8" />
           访问完整知识库
-          <span className="ml-2 transition-transform duration-300 group-hover:translate-x-1">→</span>
+          <span className="ml-1 transition-transform duration-300 group-hover:translate-x-1 sm:ml-2">→</span>
         </a>
         <div className="mt-7">
           <a

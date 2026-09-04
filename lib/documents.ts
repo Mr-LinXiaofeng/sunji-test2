@@ -1,6 +1,6 @@
 import type { FileType } from "@/components/document-icons"
 
-export type DocCategory = "device" | "semi" | "full"
+export type DocCategory = "implementation" | "semi" | "full"
 
 export interface DocItem {
   id: string
@@ -14,7 +14,7 @@ export interface DocItem {
 }
 
 export const categoryLabels: Record<DocCategory, string> = {
-  device: "设备实施",
+  implementation: "设备实施",
   semi: "半自助",
   full: "全自助（二次开发）",
 }
@@ -28,7 +28,7 @@ export const documents: DocItem[] = [
     size: "11.3 KB",
     fileName: "jianjian-form.xlsx",
     downloadName: "商捷进件表-x台-20xx年xx月xx日.xlsx",
-    category: "device",
+    category: "implementation",
   },
   {
     id: "driver",

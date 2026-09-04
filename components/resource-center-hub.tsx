@@ -21,7 +21,7 @@ const cards: { key: ResourceCategory; title: string; description: string; icon: 
     icon: FileText,
   },
   {
-    key: "device",
+    key: "implementation",
     title: "设备实施",
     description: "设备激活绑定前需要填写的进件表格",
     icon: Wrench,

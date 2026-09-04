@@ -1,8 +1,8 @@
-export type ResourceCategory = "brochure" | "device" | "semi" | "full"
+export type ResourceCategory = "brochure" | "implementation" | "semi" | "full"
 
 export const resourceCenterTabs: { key: ResourceCategory; label: string }[] = [
   { key: "brochure", label: "产品彩页" },
-  { key: "device", label: "设备实施" },
+  { key: "implementation", label: "设备实施" },
   { key: "semi", label: "半自助" },
   { key: "full", label: "全自助（二次开发）" },
 ]

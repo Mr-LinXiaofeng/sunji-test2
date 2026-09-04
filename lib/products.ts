@@ -23,7 +23,7 @@ export interface ProductAccessory {
 }
 
 export interface ProductDevice {
-  slug: string // 路由标识，如 /device/t671a
+  slug: string // 路由标识，如 /resource-center/brochure/t671a
   name: string // 设备名称
   image: string // 产品图文件名（位于 /images/products 下）
   images?: string[] // 多张产品图文件名（位于 /images/products 下，用于轮播；缺省则仅用 image）
@@ -291,5 +291,5 @@ export const products: ProductDevice[] = [
 ]
 
 export function getProductBySlug(slug: string): ProductDevice | undefined {
-  return products.find((p) => p.slug === slug)
+  return products.find((p) => p.slug.toLowerCase() === slug.toLowerCase())
 }

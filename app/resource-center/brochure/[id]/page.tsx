@@ -18,9 +18,9 @@ export default async function DevicePage({ params }: DevicePageProps) {
 
   return (
     <div className="flex min-h-screen flex-col">
-      <Navbar basePath="../../" />
+      <Navbar basePath="../../../" />
       <main className="flex-1">
-        <DeviceDetail device={device} basePath="../../" />
+        <DeviceDetail device={device} basePath="../../../" />
       </main>
       <Footer />
     </div>

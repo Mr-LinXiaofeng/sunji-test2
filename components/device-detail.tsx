@@ -10,11 +10,11 @@ import { ProductImageCarousel } from "@/components/product-image-carousel"
 
 interface DeviceDetailProps {
   device: ProductDevice
-  // 相对根目录的前缀，设备详情页位于 /device/[slug]，本地文件方式需回退两级
+  // 相对根目录的前缀，设备详情页位于 /resource-center/brochure/[slug]，本地文件方式需回退三级
   basePath?: string
-}
+  }
 
-export function DeviceDetail({ device, basePath = "../../" }: DeviceDetailProps) {
+export function DeviceDetail({ device, basePath = "../../../" }: DeviceDetailProps) {
   const [isFile, setIsFile] = useState(false)
   const [size, setSize] = useState<string>(device.brochureSize)
 
@@ -233,7 +233,7 @@ export function DeviceDetail({ device, basePath = "../../" }: DeviceDetailProps)
 
           {/* 返回资料中心 */}
           <div className="mt-12 flex justify-center">
-            <BackToHomeButton basePath={basePath} label="返回资料中心" targetPath="resource-center" />
+            <BackToHomeButton basePath={basePath} label="返回资料中心" targetPath="resource-center/brochure" />
           </div>
       </div>
 

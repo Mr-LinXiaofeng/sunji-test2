@@ -26,8 +26,9 @@ export function ProductBrochureSection({ basePath = "./" }: ProductBrochureSecti
   // 本地文件方式打开时用相对路径，http 环境（预览/部署）用绝对路径
   const docPath = (name: string) => (isFile ? `${basePath}docs/${name}` : `/docs/${name}`)
   const imgPath = (name: string) => (isFile ? `${basePath}images/products/${name}` : `/images/products/${name}`)
-  // 设备详情页路由：http 环境用干净路由，本地文件方式用相对 index.html
-  const devicePath = (slug: string) => (isFile ? `${basePath}device/${slug}/index.html` : `/device/${slug}`)
+  // 设备详情页路由：位于当前页面（产品彩页）下的子路径
+  // http 环境用干净路由，本地文件方式用相对子目录（无需 basePath，因为是当前目录的下一级）
+  const devicePath = (slug: string) => (isFile ? `${slug}/index.html` : `/resource-center/brochure/${slug}`)
 
   // 下载全部产品彩页
   const handleDownloadAll = () =>

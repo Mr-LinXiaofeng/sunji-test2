@@ -155,8 +155,8 @@ export function ProductSection() {
     <section className="py-16 bg-gradient-to-b from-muted/20 to-muted/40">
       <div className="container mx-auto px-4">
         <div className="text-center mb-10">
-          <h2 className="text-3xl font-bold text-foreground">商捷产品常用功能/常见问题</h2>
-          <p className="mt-3 text-muted-foreground text-lg">
+          <h2 className="text-2xl sm:text-3xl font-bold text-foreground">商捷产品常用功能/常见问题</h2>
+          <p className="mt-3 text-muted-foreground text-sm sm:text-lg">
             点击链接可查看设备常用功能和常见问题
           </p>
         </div>

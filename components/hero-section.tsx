@@ -50,7 +50,7 @@ export function HeroSection() {
             <span className="transition-transform duration-300 group-hover:translate-x-0.5">→</span>
           </a>
         </div>
-        <p className="mt-8 text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+        <p className="mt-8 text-sm sm:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
           专业的医保终端解决方案，为您提供设备手册、故障排查、技术文档等全方位支持
         </p>
       </div>

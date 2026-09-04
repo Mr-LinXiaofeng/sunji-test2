@@ -162,7 +162,7 @@ export const products: ProductDevice[] = [
     slug: "t6711",
     name: "商捷桌面终端",
     image: "t6711.png",
-    images: ["t6711-front-side.png", "t6711-front.png", "t6711-side-t.png", "t6711-back.png"],
+    images: ["t6711-attached.png", "t6711-front.png", "t6711-side-t.png", "t6711-back.png"],
     model: "T6711",
     os: "安卓8，蚂蚁OS",
     storage: "4G + 64G",
@@ -175,7 +175,7 @@ export const products: ProductDevice[] = [
     tagline: "面向医院收费与结算窗口的桌面医保终端，多种安装方式灵活适配柜台环境。",
     tags: ["10″ 高清屏", "3D 结构光刷脸", "多种安装方式", "半自助"],
     specs: [
-      { label: "认�������型号", value: "T6711" },
+      { label: "认证型号", value: "T6711" },
       { label: "操作系统", value: "安卓8.1（蚂蚁OS）" },
       { label: "处理器", value: "8核，1.8GHz" },
       { label: "存储器", value: "64GB ROM + 4GB RAM" },

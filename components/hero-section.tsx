@@ -1,6 +1,15 @@
-import { BookOpen } from "lucide-react"
+"use client"
+
+import { useEffect, useState } from "react"
+import { BookOpen, FolderOpen } from "lucide-react"
 
 export function HeroSection() {
+  const [isFile, setIsFile] = useState(false)
+  useEffect(() => {
+    setIsFile(window.location.protocol === "file:")
+  }, [])
+  const resourceCenterHref = isFile ? "./resource-center/index.html" : "/resource-center"
+
   return (
     <section className="relative py-20 md:py-28 overflow-hidden">
       {/* 背景纹理层 */}
@@ -31,6 +40,16 @@ export function HeroSection() {
           访问完整知识库
           <span className="ml-2 transition-transform duration-300 group-hover:translate-x-1">→</span>
         </a>
+        <div className="mt-5">
+          <a
+            href={resourceCenterHref}
+            className="group inline-flex items-center justify-center gap-2 text-base font-medium text-muted-foreground transition-colors hover:text-[#0ab2bd]"
+          >
+            <FolderOpen className="w-4 h-4" />
+            资料中心
+            <span className="transition-transform duration-300 group-hover:translate-x-0.5">→</span>
+          </a>
+        </div>
         <p className="mt-10 text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
           专业的医保终端解决方案，为您提供设备手册、故障排查、技术文档等全方位支持
         </p>

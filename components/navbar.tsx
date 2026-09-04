@@ -42,7 +42,6 @@ interface NavbarProps {
 // 计算某个导航项在当前环境（http 干净路由 / 本地文件双击）下的目标地址
 function useHrefResolver(basePath: string, isFile: boolean) {
   const homeHref = isFile ? `${basePath}index.html` : "/"
-  const resourceCenterHref = isFile ? `${basePath}resource-center/index.html` : "/resource-center"
 
   const getHref = (item: (typeof navItems)[number]) => {
     if ("isHome" in item && item.isHome) return homeHref
@@ -54,13 +53,13 @@ function useHrefResolver(basePath: string, isFile: boolean) {
     return homeHref
   }
 
-  return { homeHref, resourceCenterHref, getHref }
+  return { homeHref, getHref }
 }
 
 export function Navbar({ basePath = "./" }: NavbarProps) {
   const pathname = usePathname()
   const isFile = useIsFileProtocol()
-  const { homeHref, resourceCenterHref, getHref } = useHrefResolver(basePath, isFile)
+  const { homeHref, getHref } = useHrefResolver(basePath, isFile)
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -89,22 +88,6 @@ export function Navbar({ basePath = "./" }: NavbarProps) {
           })}
         </nav>
         <MobileNav pathname={pathname} basePath={basePath} isFile={isFile} />
-      </div>
-      {/* 导航栏下方工具条：右侧提供资料中心入口 */}
-      <div className="border-t border-border/40">
-        <div className="container mx-auto flex h-12 items-center justify-end px-4">
-          <a
-            href={resourceCenterHref}
-            className={cn(
-              "inline-flex items-center gap-1.5 rounded-md px-4 py-1.5 text-sm font-medium transition-colors",
-              pathname.startsWith("/resource-center")
-                ? "bg-[#0ab2bd] text-white"
-                : "bg-[#0ab2bd]/10 text-[#0ab2bd] hover:bg-[#0ab2bd]/20"
-            )}
-          >
-            资料中心
-          </a>
-        </div>
       </div>
     </header>
   )

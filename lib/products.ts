@@ -102,7 +102,7 @@ export const products: ProductDevice[] = [
     slug: "t3b0b",
     name: "商捷碰一碰终端",
     image: "t3b0b.png",
-    images: ["t3b0b-first-new.png", "t3b0b-second-new.png", "t3b0b-front.png", "t3b0b-back.png"],
+    images: ["t3b0b-second-new.png", "t3b0b-first-new.png", "t3b0b-front.png", "t3b0b-back.png"],
     model: "T3B0B",
     os: "安卓11，商米OS",
     storage: "4G + 64G",
@@ -175,7 +175,7 @@ export const products: ProductDevice[] = [
     tagline: "面向医院收费与结算窗口的桌面医保终端，多种安装方式灵活适配柜台环境。",
     tags: ["10″ 高清屏", "3D 结构光刷脸", "多种安装方式", "半自助"],
     specs: [
-      { label: "认���型号", value: "T6711" },
+      { label: "认�����型号", value: "T6711" },
       { label: "操作系统", value: "安卓8.1（蚂蚁OS）" },
       { label: "处理器", value: "8核，1.8GHz" },
       { label: "存储器", value: "64GB ROM + 4GB RAM" },

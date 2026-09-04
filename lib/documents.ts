@@ -23,11 +23,11 @@ export const documents: DocItem[] = [
   {
     id: "excel",
     type: "excel",
-    name: "商捷进件表-x台-20xx年xx月xx日",
+    name: "xx省-xx市-x台-20xx年xx月xx日",
     description: "设备在进行激活绑定前需要填写的表格，填写并修改文件名后提交给销售处理",
     size: "11.3 KB",
     fileName: "jianjian-form.xlsx",
-    downloadName: "商捷进件表-x台-20xx年xx月xx日.xlsx",
+    downloadName: "xx省-xx市-x台-20xx年xx月xx日.xlsx",
     category: "implementation",
   },
   {

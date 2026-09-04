@@ -149,7 +149,7 @@ export function Footer() {
                   rel="noopener noreferrer"
                   className="text-sm text-muted-foreground hover:text-[#0ab2bd] transition-colors"
                 >
-                  易维知识库连接
+                  易维知识库链接
                 </a>
               </li>
             </ul>

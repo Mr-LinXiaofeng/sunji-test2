@@ -50,7 +50,7 @@ export const products: ProductDevice[] = [
     slug: "t671a",
     name: "商捷平板终端",
     image: "t671a.png",
-    images: ["t671a-t.png", "t671a-front-back-t.png"],
+    images: ["t671a-attached.png", "t671a-front-back-t.png"],
     model: "T671A",
     os: "安卓13，商米OS",
     storage: "4G + 64G",
@@ -175,7 +175,7 @@ export const products: ProductDevice[] = [
     tagline: "面向医院收费与结算窗口的桌面医保终端，多种安装方式灵活适配柜台环境。",
     tags: ["10″ 高清屏", "3D 结构光刷脸", "多种安装方式", "半自助"],
     specs: [
-      { label: "认�����型号", value: "T6711" },
+      { label: "认�������型号", value: "T6711" },
       { label: "操作系统", value: "安卓8.1（蚂蚁OS）" },
       { label: "处理器", value: "8核，1.8GHz" },
       { label: "存储器", value: "64GB ROM + 4GB RAM" },

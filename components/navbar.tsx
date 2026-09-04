@@ -63,9 +63,9 @@ export function Navbar({ basePath = "./" }: NavbarProps) {
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container mx-auto flex h-18 items-center justify-between px-4">
-        <a href={homeHref} className="flex items-center gap-3 text-2xl font-bold text-[#0ab2bd]">
-          <SJIcon className="w-10 h-10 text-base" />
+      <div className="container mx-auto flex h-14 items-center justify-between px-4 sm:h-18">
+        <a href={homeHref} className="flex items-center gap-2 text-sm font-bold text-[#0ab2bd] sm:gap-3 sm:text-2xl">
+          <SJIcon className="w-7 h-7 text-xs sm:w-10 sm:h-10 sm:text-base" />
           商捷SUNJI知识库
         </a>
         <nav className="hidden md:flex items-center gap-6">
@@ -99,10 +99,10 @@ function MobileNav({ pathname, basePath, isFile }: { pathname: string; basePath:
   return (
     <div className="md:hidden">
       <details className="group relative">
-        <summary className="flex cursor-pointer list-none items-center gap-1 rounded-md px-3 py-2 text-base font-medium hover:bg-accent">
+        <summary className="flex cursor-pointer list-none items-center gap-1 rounded-md px-2 py-1.5 text-sm font-medium hover:bg-accent">
           <span>菜单</span>
           <svg
-            className="h-4 w-4 transition-transform group-open:rotate-180"
+            className="h-3.5 w-3.5 transition-transform group-open:rotate-180"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -120,7 +120,7 @@ function MobileNav({ pathname, basePath, isFile }: { pathname: string; basePath:
                 key={item.name}
                 href={getHref(item)}
                 className={cn(
-                  "block rounded-md px-3 py-2 text-base transition-colors hover:bg-accent",
+                  "block rounded-md px-3 py-2 text-sm transition-colors hover:bg-accent",
                   isActive ? "text-[#0ab2bd] font-medium" : "text-foreground/80"
                 )}
               >

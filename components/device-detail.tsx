@@ -231,9 +231,9 @@ export function DeviceDetail({ device, basePath = "../../../" }: DeviceDetailPro
           </div>
         )}
 
-          {/* 返回资料中心 */}
+          {/* 返回产品彩页 */}
           <div className="mt-12 flex justify-center">
-            <BackToHomeButton basePath={basePath} label="返回资料中心" targetPath="resource-center/brochure" />
+            <BackToHomeButton basePath={basePath} label="返回产品彩页" targetPath="resource-center/brochure" />
           </div>
       </div>
 

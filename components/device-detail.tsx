@@ -134,10 +134,10 @@ export function DeviceDetail({ device, basePath = "../../../" }: DeviceDetailPro
             <dl className="divide-y divide-border">
               {device.specs.map((spec) => (
                 <div key={spec.label} className="flex">
-                  <dt className="w-48 shrink-0 whitespace-nowrap bg-muted/60 px-5 py-3.5 text-sm text-muted-foreground">
+                  <dt className="w-24 shrink-0 whitespace-normal break-words bg-muted/60 px-3 py-3.5 text-sm text-muted-foreground sm:w-48 sm:whitespace-nowrap sm:px-5">
                     {spec.label}
                   </dt>
-                  <dd className="flex-1 whitespace-pre-line border-l border-border bg-background px-5 py-3.5 text-sm font-medium text-foreground">
+                  <dd className="min-w-0 flex-1 whitespace-pre-line break-words border-l border-border bg-background px-3 py-3.5 text-sm font-medium text-foreground sm:px-5">
                     {spec.value}
                   </dd>
                 </div>

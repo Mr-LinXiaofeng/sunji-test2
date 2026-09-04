@@ -78,18 +78,18 @@ export function ProductBrochureSection({ basePath = "./" }: ProductBrochureSecti
           {products.map((device) => (
             <div
               key={device.slug}
-              className="grid grid-cols-2 overflow-hidden rounded-2xl border border-border bg-background shadow-sm transition-all hover:-translate-y-1 hover:shadow-lg"
+              className="grid grid-cols-1 overflow-hidden rounded-2xl border border-border bg-background shadow-sm transition-all hover:-translate-y-1 hover:shadow-lg sm:grid-cols-2"
             >
-              {/* 左半边：产品图，铺满整个左半区 */}
+              {/* 产品图：移动端居上铺满宽度，桌面端占左半区 */}
               <div className="flex items-center justify-center bg-muted/40 p-3">
                 <img
                   src={imgPath(device.image) || "/placeholder.svg"}
                   alt={`${device.name} 产品图`}
-                  className="h-full max-h-56 w-full object-contain"
+                  className="h-40 w-full object-contain sm:h-full sm:max-h-56"
                 />
               </div>
 
-              {/* 右半边：名称 + 横线 + 4 行参数 + 按钮 */}
+              {/* 名称 + 横线 + 4 行参数 + 按钮：移动端居下，桌面端占右半区 */}
               <div className="flex flex-col p-4">
                 <h3 className="text-lg font-bold text-foreground md:text-xl">{device.name}</h3>
 
@@ -99,19 +99,19 @@ export function ProductBrochureSection({ basePath = "./" }: ProductBrochureSecti
                 <dl className="space-y-2 text-base">
                   <div className="flex">
                     <dt className="w-[5rem] shrink-0 text-muted-foreground">认证型号：</dt>
-                    <dd className="flex-1 whitespace-nowrap pl-2 text-foreground/80">{device.model}</dd>
+                    <dd className="min-w-0 flex-1 break-words pl-2 text-foreground/80">{device.model}</dd>
                   </div>
                   <div className="flex">
                     <dt className="w-[5rem] shrink-0 text-muted-foreground">操作系统：</dt>
-                    <dd className="flex-1 whitespace-nowrap pl-2 text-foreground/80">{device.os}</dd>
+                    <dd className="min-w-0 flex-1 break-words pl-2 text-foreground/80">{device.os}</dd>
                   </div>
                   <div className="flex">
                     <dt className="w-[5rem] shrink-0 text-muted-foreground">存储器：</dt>
-                    <dd className="flex-1 whitespace-nowrap pl-2 text-foreground/80">{device.storage}</dd>
+                    <dd className="min-w-0 flex-1 break-words pl-2 text-foreground/80">{device.storage}</dd>
                   </div>
                   <div className="flex">
                     <dt className="w-[5rem] shrink-0 text-muted-foreground">业务模式：</dt>
-                    <dd className="flex-1 whitespace-nowrap pl-2 text-foreground/80">{device.businessMode}</dd>
+                    <dd className="min-w-0 flex-1 break-words pl-2 text-foreground/80">{device.businessMode}</dd>
                   </div>
                 </dl>
 

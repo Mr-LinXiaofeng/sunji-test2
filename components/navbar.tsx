@@ -4,14 +4,19 @@ import { usePathname } from "next/navigation"
 import { useEffect, useState } from "react"
 import { cn } from "@/lib/utils"
 
+const deviceNavItems = [
+  { name: "平板终端", slug: "t671a" },
+  { name: "碰一碰终端", slug: "t3b0b" },
+  { name: "桌面/窗口终端", slug: "t6711" },
+  { name: "融合终端", slug: "t3b0a" },
+  { name: "手持终端", slug: "t6f01" },
+  { name: "自助终端", slug: "f4e0m" },
+] as const
+
 const navItems = [
-  { name: "首页", external: false, isHome: true },
-  { name: "台式/窗口终端", href: "https://www.yuque.com/jiatao-ae47m/knowledgebase/desktop", external: true },
-  { name: "手持终端", href: "https://www.yuque.com/jiatao-ae47m/knowledgebase/handheld", external: true },
-  { name: "自助终端", href: "https://www.yuque.com/jiatao-ae47m/knowledgebase/kiosk", external: true },
-  { name: "嵌入式模组", href: "https://www.yuque.com/jiatao-ae47m/knowledgebase/integrated", external: true },
-  { name: "资料中心", external: false, isResource: true, route: "/resource-center", file: "resource-center/index.html" },
-]
+  { name: "首页", isHome: true },
+  ...deviceNavItems.map((d) => ({ name: d.name, isDevice: true, slug: d.slug })),
+] as const
 
 // 判断当前是否以本地文件方式打开（双击 index.html）
 function useIsFileProtocol() {
@@ -34,17 +39,28 @@ interface NavbarProps {
   basePath?: string
 }
 
+// 计算某个导航项在当前环境（http 干净路由 / 本地文件双击）下的目标地址
+function useHrefResolver(basePath: string, isFile: boolean) {
+  const homeHref = isFile ? `${basePath}index.html` : "/"
+  const resourceCenterHref = isFile ? `${basePath}resource-center/index.html` : "/resource-center"
+
+  const getHref = (item: (typeof navItems)[number]) => {
+    if ("isHome" in item && item.isHome) return homeHref
+    if ("isDevice" in item && item.isDevice) {
+      return isFile
+        ? `${basePath}resource-center/brochure/${item.slug}/index.html`
+        : `/resource-center/brochure/${item.slug}`
+    }
+    return homeHref
+  }
+
+  return { homeHref, resourceCenterHref, getHref }
+}
+
 export function Navbar({ basePath = "./" }: NavbarProps) {
   const pathname = usePathname()
   const isFile = useIsFileProtocol()
-  // 本地文件方式打开时用相对 .html 路径，http 环境（预览/部署）用干净路由
-  const homeHref = isFile ? `${basePath}index.html` : "/"
-
-  const getHref = (item: (typeof navItems)[number]) => {
-    if (item.isHome) return homeHref
-    if (isFile) return `${basePath}${item.file}`
-    return item.route ?? "/"
-  }
+  const { homeHref, resourceCenterHref, getHref } = useHrefResolver(basePath, isFile)
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -53,24 +69,11 @@ export function Navbar({ basePath = "./" }: NavbarProps) {
           <SJIcon className="w-10 h-10 text-base" />
           商捷SUNJI知识库
         </a>
-        <nav className="hidden md:flex items-center gap-8">
+        <nav className="hidden md:flex items-center gap-6">
           {navItems.map((item) => {
-            if (item.external) {
-              return (
-                <a
-                  key={item.name}
-                  href={item.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-lg font-medium transition-colors hover:text-[#0ab2bd] text-foreground/80"
-                >
-                  {item.name}
-                </a>
-              )
-            }
             const isActive =
-              (item.isHome && pathname === "/") ||
-              (item.isResource && pathname.startsWith("/resource-center"))
+              ("isHome" in item && item.isHome && pathname === "/") ||
+              ("isDevice" in item && item.isDevice && pathname === `/resource-center/brochure/${item.slug}`)
             return (
               <a
                 key={item.name}
@@ -87,18 +90,28 @@ export function Navbar({ basePath = "./" }: NavbarProps) {
         </nav>
         <MobileNav pathname={pathname} basePath={basePath} isFile={isFile} />
       </div>
+      {/* 导航栏下方工具条：右侧提供资料中心入口 */}
+      <div className="border-t border-border/40">
+        <div className="container mx-auto flex h-12 items-center justify-end px-4">
+          <a
+            href={resourceCenterHref}
+            className={cn(
+              "inline-flex items-center gap-1.5 rounded-md px-4 py-1.5 text-sm font-medium transition-colors",
+              pathname.startsWith("/resource-center")
+                ? "bg-[#0ab2bd] text-white"
+                : "bg-[#0ab2bd]/10 text-[#0ab2bd] hover:bg-[#0ab2bd]/20"
+            )}
+          >
+            资料中心
+          </a>
+        </div>
+      </div>
     </header>
   )
 }
 
 function MobileNav({ pathname, basePath, isFile }: { pathname: string; basePath: string; isFile: boolean }) {
-  const homeHref = isFile ? `${basePath}index.html` : "/"
-
-  const getHref = (item: (typeof navItems)[number]) => {
-    if (item.isHome) return homeHref
-    if (isFile) return `${basePath}${item.file}`
-    return item.route ?? "/"
-  }
+  const { homeHref, getHref } = useHrefResolver(basePath, isFile)
 
   return (
     <div className="md:hidden">
@@ -116,22 +129,9 @@ function MobileNav({ pathname, basePath, isFile }: { pathname: string; basePath:
         </summary>
         <div className="absolute right-0 top-full mt-2 w-48 rounded-md border bg-background p-2 shadow-lg">
           {navItems.map((item) => {
-            if (item.external) {
-              return (
-                <a
-                  key={item.name}
-                  href={item.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="block rounded-md px-3 py-2 text-base transition-colors hover:bg-accent text-foreground/80"
-                >
-                  {item.name}
-                </a>
-              )
-            }
             const isActive =
-              (item.isHome && pathname === "/") ||
-              (item.isResource && pathname.startsWith("/resource-center"))
+              ("isHome" in item && item.isHome && pathname === "/") ||
+              ("isDevice" in item && item.isDevice && pathname === `/resource-center/brochure/${item.slug}`)
             return (
               <a
                 key={item.name}

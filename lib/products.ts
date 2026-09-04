@@ -254,7 +254,7 @@ export const products: ProductDevice[] = [
     slug: "f4e0m",
     name: "商捷自助终端",
     image: "f4e0m.png",
-    images: ["f4e0m.png", "f4e0m-front.png", "f4e0m-multi.jpg"],
+    images: ["f4e0m-column-front-new.png", "f4e0m-front.png", "f4e0m-multi-new.png"],
     model: "F4E0M",
     os: "安卓9，商米OS",
     storage: "4G + 32G",

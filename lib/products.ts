@@ -221,8 +221,8 @@ export const products: ProductDevice[] = [
   {
     slug: "t6f01",
     name: "商捷手持终端",
-    image: "t6f01.png",
-    images: ["t6f01.png", "t6f01-multi.png"],
+    image: "t6f01-front-new.png",
+    images: ["t6f01-front-new.png", "t6f01-multi-new.png"],
     model: "T6F01",
     os: "安卓11，商米OS",
     storage: "2G + 64G",
@@ -265,7 +265,7 @@ export const products: ProductDevice[] = [
     brochureSize: "727.2 KB",
     supportUrl: "https://www.yuque.com/jiatao-ae47m/knowledgebase/tcnlqvtz72i2oz29",
     tagline: "面向医院大厅的自助服务终端，24″ 大屏一体机支持挂壁与立式部署，全流程自助办理。",
-    tags: ["24″ FHD 大屏", "小票 + A4 打印", "三色提示灯", "全自助"],
+    tags: ["24″ FHD 大屏", "���票 + A4 打印", "三色提示灯", "全自助"],
     specs: [
       { label: "认证型号", value: "F4E0M" },
       { label: "操作系统", value: "安卓9 安全操作系统" },

@@ -120,7 +120,7 @@ export function DeviceDetail({ device, basePath = "../../" }: DeviceDetailProps)
                   className="inline-flex items-center justify-center gap-2 rounded-xl border border-[#0ab2bd] px-6 py-3.5 text-base font-semibold text-[#0ab2bd] transition-colors hover:bg-[#0ab2bd] hover:text-white"
                 >
                   <BookOpen className="h-5 w-5" />
-                  获取技术支持
+                  查看知识库
                 </a>
               )}
             </div>
@@ -231,10 +231,10 @@ export function DeviceDetail({ device, basePath = "../../" }: DeviceDetailProps)
           </div>
         )}
 
-        {/* 返回首页 */}
-        <div className="mt-12 flex justify-center">
-          <BackToHomeButton basePath={basePath} />
-        </div>
+          {/* 返回资料中心 */}
+          <div className="mt-12 flex justify-center">
+            <BackToHomeButton basePath={basePath} label="返回资料中心" targetPath="resource-center" />
+          </div>
       </div>
 
       <Toaster position="bottom-right" richColors />

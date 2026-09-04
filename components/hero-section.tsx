@@ -40,7 +40,7 @@ export function HeroSection() {
           访问完整知识库
           <span className="ml-2 transition-transform duration-300 group-hover:translate-x-1">→</span>
         </a>
-        <div className="mt-4">
+        <div className="mt-7">
           <a
             href={resourceCenterHref}
             className="group inline-flex items-center justify-center gap-2 rounded-full border border-[#0ab2bd]/30 bg-white/60 px-5 py-2 text-sm font-medium text-[#0ab2bd] shadow-sm backdrop-blur-sm transition-all duration-300 hover:border-[#0ab2bd]/60 hover:bg-[#0ab2bd]/5 hover:shadow-md"

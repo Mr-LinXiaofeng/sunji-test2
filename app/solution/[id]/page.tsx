@@ -1,6 +1,7 @@
-import { Construction, ArrowLeft } from "lucide-react"
+import { Construction } from "lucide-react"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
+import { BackToHomeButton } from "@/components/back-to-home-button"
 
 const solutionNames: Record<string, string> = {
   "1": "解决方案1",
@@ -36,13 +37,7 @@ export default async function SolutionPage({ params }: { params: Promise<{ id: s
             <p className="text-sm text-muted-foreground mb-8">
               我们正在努力完善此页面的内容，请稍后再来查看。
             </p>
-            <a 
-              href="../../index.html"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-[#0ab2bd] text-white font-medium rounded-lg hover:bg-[#099aa3] transition-colors"
-            >
-              <ArrowLeft className="w-4 h-4" />
-              返回首页
-            </a>
+            <BackToHomeButton basePath="../../" />
           </div>
         </div>
       </main>

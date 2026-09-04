@@ -132,6 +132,26 @@ export function Footer() {
                   商捷智慧医疗解决方案
                 </a>
               </li>
+              <li>
+                <a 
+                  href="https://qrtool.ewill.cn/" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-sm text-muted-foreground hover:text-[#0ab2bd] transition-colors"
+                >
+                  机构绑定二维码生成与设备二维码识别
+                </a>
+              </li>
+              <li>
+                <a 
+                  href="https://xankbu.helplook.net" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-sm text-muted-foreground hover:text-[#0ab2bd] transition-colors"
+                >
+                  易维知识库链接
+                </a>
+              </li>
             </ul>
           </div>
         </div>

@@ -7,6 +7,7 @@ interface FAQItem {
   id: number
   title: string
   subtitle?: string
+  subtitleLink?: { prefix?: string; label: string; url: string } // 副标题内可单独跳转的链接（prefix 为普通文字，label 为带下划线的链接）
   href: string
   icon: React.ReactNode
   accentColor: string
@@ -15,8 +16,13 @@ interface FAQItem {
 const faqItems: FAQItem[] = [
   {
     id: 1,
-    title: "自动激活绑定",
-    subtitle: "适用机型：T3B0A、T3B0B、T6F01",
+  title: "自动激活绑定",
+  subtitle: "适用机型：T3B0A、T3B0B、T6F01",
+  subtitleLink: {
+    prefix: "自动激活绑定二维码生成网址：",
+    label: "http://8.154.41.111/bindQr/",
+    url: "http://8.154.41.111/bindQr/",
+  },
     href: "https://www.yuque.com/jiatao-ae47m/knowledgebase/ozxswr5x8vmu99y3",
     icon: <Zap className="w-6 h-6" />,
     accentColor: "from-[#0ab2bd]/10 to-[#0ab2bd]/5 border-[#0ab2bd]/30 hover:border-[#0ab2bd]",
@@ -98,18 +104,42 @@ function FAQCard({ item }: { item: FAQItem }) {
       className="block group"
     >
       <Card className={`h-full transition-all duration-300 border-2 bg-gradient-to-br ${item.accentColor} hover:shadow-lg hover:-translate-y-1`}>
-        <CardContent className="p-5">
-          <div className="flex items-start gap-4">
-            <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-white/80 shadow-sm flex items-center justify-center text-[#0ab2bd] group-hover:scale-110 transition-transform duration-300">
+        <CardContent className="p-3.5 sm:p-5">
+          <div className="flex items-start gap-3 sm:gap-4">
+            <div className="flex-shrink-0 w-9 h-9 sm:w-12 sm:h-12 rounded-xl bg-white/80 shadow-sm flex items-center justify-center text-[#0ab2bd] group-hover:scale-110 transition-transform duration-300 [&_svg]:w-4 [&_svg]:h-4 sm:[&_svg]:w-6 sm:[&_svg]:h-6">
               {item.icon}
             </div>
             <div className="flex-1 min-w-0">
-              <h3 className="text-lg font-bold text-foreground group-hover:text-[#0ab2bd] transition-colors line-clamp-1">
+              <h3 className="text-sm sm:text-lg font-bold text-foreground group-hover:text-[#0ab2bd] transition-colors leading-snug line-clamp-2">
                 {item.title}
               </h3>
               {item.subtitle && (
-                <p className="mt-1 text-sm text-muted-foreground line-clamp-2">
+                <p className="mt-1 whitespace-pre-line break-words text-xs sm:text-sm text-muted-foreground line-clamp-3">
                   {item.subtitle}
+                </p>
+              )}
+              {item.subtitleLink && (
+                <p className="mt-1 break-words text-xs sm:text-sm text-muted-foreground">
+                  {item.subtitleLink.prefix}
+                  <span
+                    role="link"
+                    tabIndex={0}
+                    onClick={(e) => {
+                      e.preventDefault()
+                      e.stopPropagation()
+                      window.open(item.subtitleLink!.url, "_blank", "noopener,noreferrer")
+                    }}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" || e.key === " ") {
+                        e.preventDefault()
+                        e.stopPropagation()
+                        window.open(item.subtitleLink!.url, "_blank", "noopener,noreferrer")
+                      }
+                    }}
+                    className="cursor-pointer text-[#0ab2bd] underline underline-offset-2 hover:text-[#089aa3]"
+                  >
+                    {item.subtitleLink.label}
+                  </span>
                 </p>
               )}
             </div>
@@ -125,8 +155,8 @@ export function ProductSection() {
     <section className="py-16 bg-gradient-to-b from-muted/20 to-muted/40">
       <div className="container mx-auto px-4">
         <div className="text-center mb-10">
-          <h2 className="text-3xl font-bold text-foreground">商捷产品常用功能/常见问题</h2>
-          <p className="mt-3 text-muted-foreground text-lg">
+          <h2 className="text-2xl sm:text-3xl font-bold text-foreground">商捷产品常用功能/常见问题</h2>
+          <p className="mt-3 text-muted-foreground text-sm sm:text-lg">
             点击链接可查看设备常用功能和常见问题
           </p>
         </div>
@@ -139,7 +169,7 @@ export function ProductSection() {
         </div>
         
         {/* 移动端: 单列布局 */}
-        <div className="md:hidden space-y-4">
+        <div className="md:hidden space-y-3">
           {faqItems.map((item) => (
             <FAQCard key={item.id} item={item} />
           ))}

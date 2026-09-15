@@ -1,1 +1,0 @@
-self.__SSG_MANIFEST=new Set(["\u002Fresource-center\u002Fbrochure\u002F[id]","\u002Fscenario\u002F[id]","\u002Fsolution\u002F[id]"]);self.__SSG_MANIFEST_CB&&self.__SSG_MANIFEST_CB()

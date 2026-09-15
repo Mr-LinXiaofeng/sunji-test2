@@ -15,6 +15,7 @@ import {
   Cloud,
   Server,
   Wifi,
+  Landmark,
 } from "lucide-react"
 import { DataAnalyticsScreen } from "@/components/data-analytics-screen"
 
@@ -96,6 +97,23 @@ export function BpSolutionHero({ basePath = "../../" }: BpSolutionHeroProps) {
                 alt="血压计+医保IoT一体化终端，左侧为医保刷脸认证屏，右侧为血压测量臂托"
                 className="w-full drop-shadow-xl"
               />
+            </div>
+          </div>
+        </div>
+
+        {/* 政策导向 */}
+        <div className="mx-auto mt-10 max-w-4xl md:mt-12">
+          <div className="flex flex-col items-start gap-4 rounded-2xl border border-[#0ab2bd]/20 bg-white/80 p-5 shadow-sm backdrop-blur-sm sm:flex-row sm:items-center sm:gap-5 sm:p-6">
+            <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-2xl bg-[#0ab2bd]/10 text-[#0ab2bd]">
+              <Landmark className="h-6 w-6" />
+            </div>
+            <div>
+              <p className="text-xs font-semibold tracking-wide text-[#0ab2bd]">政策导向</p>
+              <p className="mt-1 text-sm leading-relaxed text-foreground sm:text-[0.95rem]">
+                国家医疗保障局重点推动开展<span className="font-bold text-[#078089]">个人医保云</span>建设工作，
+                本方案积极响应政策号召，以医保身份认证为入口、健康数据云端归集为支撑，
+                助力个人医保云基础设施落地，服务基层医保治理与健康监管数字化升级。
+              </p>
             </div>
           </div>
         </div>

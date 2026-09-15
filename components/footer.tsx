@@ -1,3 +1,6 @@
+"use client"
+
+import { useEffect, useState } from "react"
 import { cn } from "@/lib/utils"
 
 function SJIcon({ className }: { className?: string }) {
@@ -8,7 +11,33 @@ function SJIcon({ className }: { className?: string }) {
   )
 }
 
-export function Footer() {
+const deviceTypes = [
+  { name: "平板终端", slug: "t671a" },
+  { name: "碰一碰终端", slug: "t3b0b" },
+  { name: "桌面/窗口终端", slug: "t6711" },
+  { name: "融合终端", slug: "t3b0a" },
+  { name: "手持终端", slug: "t6f01" },
+  { name: "自助终端", slug: "f4e0m" },
+] as const
+
+// 判断当前是否以本地文件方式打开（双击 index.html）
+function useIsFileProtocol() {
+  const [isFile, setIsFile] = useState(false)
+  useEffect(() => {
+    setIsFile(window.location.protocol === "file:")
+  }, [])
+  return isFile
+}
+
+interface FooterProps {
+  basePath?: string
+}
+
+export function Footer({ basePath = "./" }: FooterProps) {
+  const isFile = useIsFileProtocol()
+  const getDeviceHref = (slug: string) =>
+    isFile ? `${basePath}resource-center/brochure/${slug}/index.html` : `/resource-center/brochure/${slug}`
+
   return (
     <footer className="border-t bg-muted/30">
       <div className="container mx-auto px-4 py-12">
@@ -28,46 +57,16 @@ export function Footer() {
           <div>
             <h3 className="text-lg font-bold text-foreground">产品类型</h3>
             <ul className="mt-2 space-y-2">
-              <li>
-                <a 
-                  href="https://www.yuque.com/jiatao-ae47m/knowledgebase/desktop" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="text-sm text-muted-foreground hover:text-[#0ab2bd] transition-colors"
-                >
-                  台式/窗口终端
-                </a>
-              </li>
-              <li>
-                <a 
-                  href="https://www.yuque.com/jiatao-ae47m/knowledgebase/handheld" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="text-sm text-muted-foreground hover:text-[#0ab2bd] transition-colors"
-                >
-                  手持终端
-                </a>
-              </li>
-              <li>
-                <a 
-                  href="https://www.yuque.com/jiatao-ae47m/knowledgebase/kiosk" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="text-sm text-muted-foreground hover:text-[#0ab2bd] transition-colors"
-                >
-                  自助终端
-                </a>
-              </li>
-              <li>
-                <a 
-                  href="https://www.yuque.com/jiatao-ae47m/knowledgebase/integrated" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="text-sm text-muted-foreground hover:text-[#0ab2bd] transition-colors"
-                >
-                  嵌入式模组
-                </a>
-              </li>
+              {deviceTypes.map((device) => (
+                <li key={device.slug}>
+                  <a
+                    href={getDeviceHref(device.slug)}
+                    className="text-sm text-muted-foreground hover:text-[#0ab2bd] transition-colors"
+                  >
+                    {device.name}
+                  </a>
+                </li>
+              ))}
             </ul>
           </div>
 

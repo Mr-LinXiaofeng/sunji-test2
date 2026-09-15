@@ -22,7 +22,7 @@ export default async function DevicePage({ params }: DevicePageProps) {
       <main className="flex-1">
         <DeviceDetail device={device} basePath="../../../" />
       </main>
-      <Footer />
+      <Footer basePath="../../../" />
     </div>
   )
 }

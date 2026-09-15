@@ -11,7 +11,7 @@ export default function ImplementationDocsPage() {
         <ResourceCenterTabs active="implementation" />
         <DocumentListSection category="implementation" basePath="../../" />
       </main>
-      <Footer />
+      <Footer basePath="../../" />
     </div>
   )
 }

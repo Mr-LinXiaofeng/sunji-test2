@@ -11,7 +11,7 @@ export default function BrochurePage() {
         <ResourceCenterTabs active="brochure" />
         <ProductBrochureSection basePath="../../" />
       </main>
-      <Footer />
+      <Footer basePath="../../" />
     </div>
   )
 }

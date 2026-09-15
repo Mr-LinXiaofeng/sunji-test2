@@ -41,7 +41,7 @@ export default async function SolutionPage({ params }: { params: Promise<{ id: s
           </div>
         </div>
       </main>
-      <Footer />
+      <Footer basePath="../../" />
     </div>
   )
 }

@@ -11,7 +11,7 @@ export default function SemiDocsPage() {
         <ResourceCenterTabs active="semi" />
         <DocumentListSection category="semi" basePath="../../" />
       </main>
-      <Footer />
+      <Footer basePath="../../" />
     </div>
   )
 }

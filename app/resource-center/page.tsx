@@ -9,7 +9,7 @@ export default function ResourceCenterPage() {
       <main className="flex-1">
         <ResourceCenterHub />
       </main>
-      <Footer />
+      <Footer basePath="../" />
     </div>
   )
 }

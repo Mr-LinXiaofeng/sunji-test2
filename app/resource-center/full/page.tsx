@@ -11,7 +11,7 @@ export default function FullDocsPage() {
         <ResourceCenterTabs active="full" />
         <DocumentListSection category="full" basePath="../../" />
       </main>
-      <Footer />
+      <Footer basePath="../../" />
     </div>
   )
 }

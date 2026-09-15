@@ -17,7 +17,7 @@ function useIsFileProtocol() {
 export function ScenarioSection() {
   const isFile = useIsFileProtocol()
   // 本地文件方式打开时用相对 .html 路径，http 环境（预览/部署）用干净路由
-  const getHref = (id: number) => (isFile ? `./solution/${id}/index.html` : `/solution/${id}`)
+  const getHref = (id: number) => (isFile ? `./iot-blood-pressure/index.html` : `/iot-blood-pressure`)
 
   return (
     <section className="py-16">

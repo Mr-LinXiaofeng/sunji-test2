@@ -18,6 +18,7 @@ import {
   Landmark,
 } from "lucide-react"
 import { DataAnalyticsScreen } from "@/components/data-analytics-screen"
+import { ProductImageCarousel } from "@/components/product-image-carousel"
 
 interface BpSolutionHeroProps {
   // 本地文件方式打开时回到根目录的相对前缀，例如 "../../"
@@ -92,10 +93,9 @@ export function BpSolutionHero({ basePath = "../../" }: BpSolutionHeroProps) {
           <div className="order-1 md:order-2">
             <div className="relative mx-auto max-w-sm md:max-w-md">
               <div className="absolute inset-0 -z-10 rounded-full bg-gradient-to-br from-[#0ab2bd]/15 to-transparent blur-2xl" />
-              <img
-                src={deviceImg || "/placeholder.svg"}
+              <ProductImageCarousel
+                images={[deviceImg]}
                 alt="血压计+医保IoT一体化终端，左侧为医保刷脸认证屏，右侧为血压测量臂托"
-                className="w-full drop-shadow-xl"
               />
             </div>
           </div>

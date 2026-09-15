@@ -12,7 +12,11 @@ import {
   AlertTriangle,
   History,
   ArrowRight,
+  Cloud,
+  Server,
+  Wifi,
 } from "lucide-react"
+import { DataAnalyticsScreen } from "@/components/data-analytics-screen"
 
 interface BpSolutionHeroProps {
   // 本地文件方式打开时回到根目录的相对前缀，例如 "../../"
@@ -47,11 +51,18 @@ export function BpSolutionHero({ basePath = "../../" }: BpSolutionHeroProps) {
   const deviceImg = isFile
     ? `${basePath}images/solutions/bp-medicare-device.png`
     : "/images/solutions/bp-medicare-device.png"
+  const bgImg = isFile
+    ? `${basePath}images/solutions/bp-hero-bg.png`
+    : "/images/solutions/bp-hero-bg.png"
 
   return (
     <section className="relative overflow-hidden py-14 md:py-20">
-      {/* 背景渐变 */}
-      <div className="absolute inset-0 bg-gradient-to-br from-[#f0fafb] via-white to-[#e8f7f8]" />
+      {/* 背景图 + 渐变遮罩 */}
+      <div
+        className="absolute inset-0 bg-cover bg-center"
+        style={{ backgroundImage: `url(${bgImg})` }}
+      />
+      <div className="absolute inset-0 bg-gradient-to-br from-white/90 via-white/85 to-[#e8f7f8]/90" />
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
         <div className="absolute -top-24 -right-24 h-96 w-96 rounded-full border border-[#0ab2bd]/10" />
         <div className="absolute -bottom-32 -left-32 h-[28rem] w-[28rem] rounded-full border border-[#0ab2bd]/5" />
@@ -129,6 +140,70 @@ export function BpSolutionHero({ basePath = "../../" }: BpSolutionHeroProps) {
               </span>
             )
           })}
+        </div>
+
+        {/* 数据同步与多维度分析大屏 */}
+        <div className="mt-16 md:mt-20">
+          <div className="mx-auto mb-8 max-w-2xl text-center">
+            <p className="text-sm font-semibold tracking-wide text-[#0ab2bd]">数据同步 · 云端存证</p>
+            <h2 className="mt-2 text-2xl font-bold text-foreground sm:text-3xl">
+              血压数据与身份信息实时同步上云
+            </h2>
+            <p className="mt-3 text-sm leading-relaxed text-muted-foreground sm:text-base">
+              终端采集的血压数据与核验后的医保身份信息，通过加密通道同步上传至云端，
+              汇聚成多维度健康监管分析大屏，支撑异常预警与监管上报。
+            </p>
+          </div>
+
+          <div className="mx-auto flex max-w-5xl flex-col items-stretch gap-4 md:flex-row md:items-center md:gap-3">
+            {/* 终端 */}
+            <div className="flex flex-1 flex-col items-center gap-3 rounded-2xl border border-[#0ab2bd]/15 bg-white/70 p-5 text-center shadow-sm backdrop-blur-sm">
+              <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#0ab2bd]/10 text-[#0ab2bd]">
+                <HeartPulse className="h-7 w-7" />
+              </div>
+              <div>
+                <p className="text-sm font-bold text-foreground">终端采集</p>
+                <p className="mt-1 text-xs text-muted-foreground">身份核验 + 血压数据</p>
+              </div>
+            </div>
+
+            <div className="flex flex-shrink-0 items-center justify-center md:rotate-0">
+              <ArrowRight className="h-5 w-5 rotate-90 text-[#0ab2bd]/50 md:rotate-0" />
+            </div>
+
+            {/* 云服务器 */}
+            <div className="flex flex-1 flex-col items-center gap-3 rounded-2xl border border-[#0ab2bd]/25 bg-gradient-to-b from-[#0ab2bd]/10 to-white/70 p-5 text-center shadow-md backdrop-blur-sm">
+              <div className="relative flex h-14 w-14 items-center justify-center rounded-2xl bg-[#0ab2bd] text-white shadow-lg shadow-[#0ab2bd]/30">
+                <Server className="h-7 w-7" />
+                <span className="absolute -right-1.5 -top-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-white text-[#0ab2bd] shadow ring-1 ring-[#0ab2bd]/20">
+                  <Wifi className="h-3 w-3" />
+                </span>
+              </div>
+              <div>
+                <p className="text-sm font-bold text-foreground">云端加密同步</p>
+                <p className="mt-1 text-xs text-muted-foreground">数据加密传输 · 云端存证</p>
+              </div>
+            </div>
+
+            <div className="flex flex-shrink-0 items-center justify-center">
+              <ArrowRight className="h-5 w-5 rotate-90 text-[#0ab2bd]/50 md:rotate-0" />
+            </div>
+
+            {/* 分析大屏 */}
+            <div className="flex flex-1 flex-col items-center gap-3 rounded-2xl border border-[#0ab2bd]/15 bg-white/70 p-5 text-center shadow-sm backdrop-blur-sm">
+              <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#0ab2bd]/10 text-[#0ab2bd]">
+                <Cloud className="h-7 w-7" />
+              </div>
+              <div>
+                <p className="text-sm font-bold text-foreground">多维分析大屏</p>
+                <p className="mt-1 text-xs text-muted-foreground">监管上报 · 异常预警</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="mx-auto mt-8 max-w-5xl">
+            <DataAnalyticsScreen />
+          </div>
         </div>
       </div>
     </section>

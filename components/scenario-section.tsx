@@ -3,12 +3,6 @@
 import { useEffect, useState } from "react"
 import { Card, CardContent } from "@/components/ui/card"
 
-const scenarios = [
-  { id: 1, name: "解决方案1" },
-  { id: 2, name: "解决方案2" },
-  { id: 3, name: "解决方案3" },
-]
-
 // 判断当前是否以本地文件方式打开（双击 index.html）
 function useIsFileProtocol() {
   const [isFile, setIsFile] = useState(false)
@@ -21,7 +15,7 @@ function useIsFileProtocol() {
 export function ScenarioSection() {
   const isFile = useIsFileProtocol()
   // 本地文件方式打开时用相对 .html 路径，http 环境（预览/部署）用干净路由
-  const getHref = (id: number) => (isFile ? `./solution/${id}/index.html` : `/solution/${id}`)
+  const href = isFile ? "./solution/blood-pressure-iot/index.html" : "/solution/blood-pressure-iot"
 
   return (
     <section className="py-16">
@@ -32,20 +26,16 @@ export function ScenarioSection() {
             选择您感兴趣的业务场景，点击查看
           </p>
         </div>
-        <div className="grid grid-cols-1 gap-3 sm:gap-6 md:grid-cols-3">
-          {scenarios.map((scenario) => (
-            <a key={scenario.id} href={getHref(scenario.id)}>
-              <Card 
-                className="h-full transition-all duration-300 hover:shadow-xl hover:border-[#0ab2bd] hover:bg-[#0ab2bd]/5 cursor-pointer border-2"
-              >
-                <CardContent className="flex items-center justify-center min-h-16 py-4 sm:min-h-32">
-                  <span className="text-base sm:text-xl font-semibold text-foreground">
-                    {scenario.name}
-                  </span>
-                </CardContent>
-              </Card>
-            </a>
-          ))}
+        <div className="mx-auto max-w-xl">
+          <a href={href}>
+            <Card className="h-full transition-all duration-300 hover:shadow-xl hover:border-[#0ab2bd] hover:bg-[#0ab2bd]/5 cursor-pointer border-2">
+              <CardContent className="flex items-center justify-center min-h-16 py-4 sm:min-h-32">
+                <span className="text-base sm:text-xl font-semibold text-foreground text-center text-balance">
+                  血压计+医保IoT智慧解决方案
+                </span>
+              </CardContent>
+            </Card>
+          </a>
         </div>
       </div>
     </section>

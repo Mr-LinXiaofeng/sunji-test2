@@ -108,7 +108,7 @@ export function BpSolutionHero({ basePath = "../../" }: BpSolutionHeroProps) {
               <Landmark className="h-6 w-6" />
             </div>
             <div>
-              <p className="text-xs font-semibold tracking-wide text-[#0ab2bd]">政策导向</p>
+              <p className="text-base font-semibold tracking-wide text-[#0ab2bd] sm:text-lg">政策导向</p>
               <p className="mt-1 text-sm leading-relaxed text-foreground sm:text-[0.95rem]">
                 国家医疗保障局重点推动开展<span className="font-bold text-[#078089]">个人医保云</span>建设工作，
                 本方案积极响应政策号召，以医保身份认证为入口、健康数据云端归集为支撑，
@@ -120,7 +120,7 @@ export function BpSolutionHero({ basePath = "../../" }: BpSolutionHeroProps) {
 
         {/* 全流程闭环 */}
         <div className="mt-14 md:mt-16">
-          <p className="mb-7 text-center text-sm font-semibold tracking-wide text-[#0ab2bd]">全流程闭环</p>
+          <p className="mb-7 text-center text-base font-semibold tracking-wide text-[#0ab2bd] sm:text-lg">全流程闭环</p>
           <div className="mx-auto flex max-w-4xl flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
             {processSteps.map((step, i) => {
               const Icon = step.icon
@@ -163,7 +163,7 @@ export function BpSolutionHero({ basePath = "../../" }: BpSolutionHeroProps) {
         {/* 数据同步与多维度分析大屏 */}
         <div className="mt-16 md:mt-20">
           <div className="mx-auto mb-8 max-w-2xl text-center">
-            <p className="text-sm font-semibold tracking-wide text-[#0ab2bd]">数据同步 · 云端存证</p>
+            <p className="text-base font-semibold tracking-wide text-[#0ab2bd] sm:text-lg">数据同步 · 云端存证</p>
             <h2 className="mt-2 text-2xl font-bold text-foreground sm:text-3xl">
               血压数据与身份信息实时同步上云
             </h2>

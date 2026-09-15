@@ -90,6 +90,10 @@ export function DataAnalyticsScreen() {
           </span>
         </div>
 
+        <p className="mb-4 text-[11px] text-[#7dd8de]/70 sm:text-xs">
+          * 以下数据为演示数据，仅用于展示大屏效果，不代表真实业务数据
+        </p>
+
         {/* 顶部指标卡 */}
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
           {statCards.map((s) => {

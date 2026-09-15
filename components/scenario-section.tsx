@@ -3,11 +3,7 @@
 import { useEffect, useState } from "react"
 import { Card, CardContent } from "@/components/ui/card"
 
-const scenarios = [
-  { id: 1, name: "解决方案1" },
-  { id: 2, name: "解决方案2" },
-  { id: 3, name: "解决方案3" },
-]
+const scenarios = [{ id: 1, name: "血压计+医保IoT智慧解决方案" }]
 
 // 判断当前是否以本地文件方式打开（双击 index.html）
 function useIsFileProtocol() {
@@ -32,7 +28,7 @@ export function ScenarioSection() {
             选择您感兴趣的业务场景，点击查看
           </p>
         </div>
-        <div className="grid grid-cols-1 gap-3 sm:gap-6 md:grid-cols-3">
+        <div className="mx-auto max-w-md">
           {scenarios.map((scenario) => (
             <a key={scenario.id} href={getHref(scenario.id)}>
               <Card 

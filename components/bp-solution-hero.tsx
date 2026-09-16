@@ -19,6 +19,7 @@ import {
 } from "lucide-react"
 import { DataAnalyticsScreen } from "@/components/data-analytics-screen"
 import { ProductImageCarousel } from "@/components/product-image-carousel"
+import { DeviceUsageScenarios } from "@/components/device-usage-scenarios"
 
 interface BpSolutionHeroProps {
   // 本地文件方式打开时回到根目录的相对前缀，例如 "../../"
@@ -223,6 +224,8 @@ export function BpSolutionHero({ basePath = "../../" }: BpSolutionHeroProps) {
             <DataAnalyticsScreen />
           </div>
         </div>
+
+        <DeviceUsageScenarios basePath={basePath} isFile={isFile} />
       </div>
     </section>
   )

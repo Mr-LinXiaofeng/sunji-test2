@@ -122,7 +122,7 @@ export function DataAnalyticsScreen() {
           <div className="col-span-1 rounded-xl border border-[#0ab2bd]/20 bg-white/5 p-3 md:col-span-2">
             <p className="mb-2 text-xs font-semibold text-[#a9d8dc]">区域血压均值趋势（mmHg）</p>
             <ChartContainer config={bpChartConfig} className="h-[160px] w-full">
-              <AreaChart data={bpTrendData} margin={{ left: -20, right: 8, top: 4, bottom: 0 }}>
+              <AreaChart data={bpTrendData} margin={{ left: 4, right: 8, top: 4, bottom: 0 }}>
                 <CartesianGrid vertical={false} stroke="rgba(125,216,222,0.15)" />
                 <XAxis
                   dataKey="time"
@@ -130,7 +130,14 @@ export function DataAnalyticsScreen() {
                   axisLine={false}
                   tick={{ fill: "#a9d8dc", fontSize: 11 }}
                 />
-                <YAxis tickLine={false} axisLine={false} tick={{ fill: "#a9d8dc", fontSize: 11 }} width={30} />
+                <YAxis
+                  tickLine={false}
+                  axisLine={false}
+                  tick={{ fill: "#a9d8dc", fontSize: 11 }}
+                  width={38}
+                  domain={[60, 140]}
+                  ticks={[60, 80, 100, 120, 140]}
+                />
                 <ChartTooltip content={<ChartTooltipContent />} />
                 <defs>
                   <linearGradient id="fillSystolic" x1="0" y1="0" x2="0" y2="1">
@@ -184,13 +191,23 @@ export function DataAnalyticsScreen() {
             <p className="-mt-4 text-center text-lg font-bold text-white">
               96.8<span className="text-xs font-normal text-[#7dd8de]">%</span>
             </p>
+            <div className="mt-2 flex items-center justify-center gap-4">
+              <span className="flex items-center gap-1.5 text-[11px] text-[#a9d8dc]">
+                <span className="h-2.5 w-2.5 rounded-sm" style={{ backgroundColor: "#0ab2bd" }} />
+                认证通过 96.8%
+              </span>
+              <span className="flex items-center gap-1.5 text-[11px] text-[#a9d8dc]">
+                <span className="h-2.5 w-2.5 rounded-sm" style={{ backgroundColor: "#f59e0b" }} />
+                待复核 3.2%
+              </span>
+            </div>
           </div>
 
           {/* 社区采集人次 */}
           <div className="col-span-1 rounded-xl border border-[#0ab2bd]/20 bg-white/5 p-3 md:col-span-3">
             <p className="mb-2 text-xs font-semibold text-[#a9d8dc]">各社区采集人次分布</p>
             <ChartContainer config={regionChartConfig} className="h-[140px] w-full">
-              <BarChart data={regionData} margin={{ left: -20, right: 8, top: 4, bottom: 0 }}>
+              <BarChart data={regionData} margin={{ left: 4, right: 8, top: 4, bottom: 0 }}>
                 <CartesianGrid vertical={false} stroke="rgba(125,216,222,0.15)" />
                 <XAxis
                   dataKey="region"
@@ -198,7 +215,14 @@ export function DataAnalyticsScreen() {
                   axisLine={false}
                   tick={{ fill: "#a9d8dc", fontSize: 11 }}
                 />
-                <YAxis tickLine={false} axisLine={false} tick={{ fill: "#a9d8dc", fontSize: 11 }} width={30} />
+                <YAxis
+                  tickLine={false}
+                  axisLine={false}
+                  tick={{ fill: "#a9d8dc", fontSize: 11 }}
+                  width={38}
+                  domain={[0, 200]}
+                  ticks={[0, 50, 100, 150, 200]}
+                />
                 <ChartTooltip content={<ChartTooltipContent />} />
                 <Bar dataKey="count" fill="#0ab2bd" radius={[4, 4, 0, 0]} />
               </BarChart>

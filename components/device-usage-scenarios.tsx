@@ -21,6 +21,7 @@ const scenarios = [
     icon: HeartHandshake,
     image: "scenario-community.png",
     alt: "患者在基层社区卫生服务中心使用医保IoT一体化终端进行刷脸认证与血压测量",
+    contain: true,
   },
 ] as const
 
@@ -52,7 +53,9 @@ export function DeviceUsageScenarios({ basePath = "../../", isFile = false }: De
                 <img
                   src={getImg(s.image) || "/placeholder.svg"}
                   alt={s.alt}
-                  className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                  className={`h-full w-full transition-transform duration-300 group-hover:scale-105 ${
+                    "contain" in s && s.contain ? "object-contain" : "object-cover"
+                  }`}
                 />
               </div>
               <div className="flex items-start gap-3 p-5">

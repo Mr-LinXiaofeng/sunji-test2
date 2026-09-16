@@ -20,6 +20,7 @@ import {
 import { DataAnalyticsScreen } from "@/components/data-analytics-screen"
 import { ProductImageCarousel } from "@/components/product-image-carousel"
 import { DeviceUsageScenarios } from "@/components/device-usage-scenarios"
+import { BackToHomeButton } from "@/components/back-to-home-button"
 
 interface BpSolutionHeroProps {
   // 本地文件方式打开时回到根目录的相对前缀，例如 "../../"
@@ -226,6 +227,11 @@ export function BpSolutionHero({ basePath = "../../" }: BpSolutionHeroProps) {
         </div>
 
         <DeviceUsageScenarios basePath={basePath} isFile={isFile} />
+
+        {/* 返回首页 */}
+        <div className="mt-14 flex justify-center md:mt-16">
+          <BackToHomeButton basePath={basePath} />
+        </div>
       </div>
     </section>
   )

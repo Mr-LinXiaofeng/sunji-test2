@@ -16,6 +16,7 @@ import {
   Server,
   Wifi,
   Landmark,
+  Handshake,
 } from "lucide-react"
 import { DataAnalyticsScreen } from "@/components/data-analytics-screen"
 import { ProductImageCarousel } from "@/components/product-image-carousel"
@@ -73,6 +74,14 @@ export function BpSolutionHero({ basePath = "../../" }: BpSolutionHeroProps) {
       </div>
 
       <div className="container relative mx-auto px-4">
+        {/* 联合方案强调条 */}
+        <div className="mx-auto mb-8 flex max-w-3xl items-center justify-center gap-2.5 rounded-2xl bg-gradient-to-r from-[#078089] via-[#0ab2bd] to-[#078089] px-5 py-3 text-center shadow-lg shadow-[#0ab2bd]/25 sm:gap-3 sm:px-6 sm:py-3.5">
+          <Handshake className="h-5 w-5 flex-shrink-0 text-white" />
+          <p className="text-sm font-bold leading-snug text-white sm:text-base">
+            本方案由商捷与合作伙伴联合研发 · 强强联合，共筑智慧医保新生态
+          </p>
+        </div>
+
         {/* 标题区 + 设备图 */}
         <div className="grid grid-cols-1 items-center gap-10 md:grid-cols-2 md:gap-12">
           <div className="order-2 text-center md:order-1 md:text-left">

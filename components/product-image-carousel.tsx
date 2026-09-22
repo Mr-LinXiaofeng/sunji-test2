@@ -125,6 +125,11 @@ export function ProductImageCarousel({ images, alt }: ProductImageCarouselProps)
           点击图片查看大图
         </div>
 
+        {/* 仅供展示提示 */}
+        <div className="pointer-events-none absolute bottom-3 left-1/2 -translate-x-1/2 rounded-full bg-foreground/60 px-3 py-1 text-xs font-medium text-white">
+          图片仅供展示，请以实物为准
+        </div>
+
         {showControls && (
           <>
             {/* 左右箭头 */}

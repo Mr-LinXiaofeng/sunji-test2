@@ -41,7 +41,7 @@ export function Footer({ basePath = "./" }: FooterProps) {
   return (
     <footer className="border-t bg-muted/30">
       <div className="container mx-auto px-4 py-12">
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
+        <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-[1fr_1fr_1fr_1.6fr]">
           {/* 品牌信息 */}
           <div>
             <div className="flex items-center gap-2">
@@ -136,7 +136,7 @@ export function Footer({ basePath = "./" }: FooterProps) {
                   href="https://qrtool.ewill.cn/" 
                   target="_blank" 
                   rel="noopener noreferrer"
-                  className="text-sm text-muted-foreground hover:text-[#0ab2bd] transition-colors"
+                  className="block whitespace-nowrap text-sm text-muted-foreground hover:text-[#0ab2bd] transition-colors"
                 >
                   机构绑定二维码生成与设备二维码识别
                 </a>

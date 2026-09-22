@@ -78,7 +78,7 @@ export function BpSolutionHero({ basePath = "../../" }: BpSolutionHeroProps) {
         <div className="mx-auto mb-8 flex max-w-3xl items-center justify-center gap-2.5 rounded-2xl bg-gradient-to-r from-[#078089] via-[#0ab2bd] to-[#078089] px-5 py-3 text-center shadow-lg shadow-[#0ab2bd]/25 sm:gap-3 sm:px-6 sm:py-3.5">
           <Handshake className="h-5 w-5 flex-shrink-0 text-white" />
           <p className="text-sm font-bold leading-snug text-white sm:text-base">
-            本方案由商捷与合作伙伴联合研发 · 强强联合，共筑智慧医保新生态
+            本方案为合作伙伴专属研发方案 · 深度定制，专为合作伙伴业务场景打造
           </p>
         </div>
 
@@ -124,6 +124,14 @@ export function BpSolutionHero({ basePath = "../../" }: BpSolutionHeroProps) {
                 国家医疗保障局重点推动开展<span className="font-bold text-[#078089]">个人医保云</span>建设工作，
                 本方案积极响应政策号召，以医保身份认证为入口、健康数据云端归集为支撑，
                 助力个人医保云基础设施落地，服务基层医保治理与健康监管数字化升级。
+                根据国家基本公共卫生服务规范，
+                <span className="font-bold text-[#078089]">35周岁及以上首诊患者需常规测量血压</span>，
+                本方案可在挂号、导诊等首诊环节同步完成身份核验与血压采集，助力医疗机构高效落实高血压早期筛查要求。
+              </p>
+              <p className="mt-3 text-sm leading-relaxed text-foreground sm:text-[0.95rem]">
+                <span className="font-bold text-[#078089]">对医疗机构的价值：</span>
+                免去人工登记与二次核验环节，将首诊测血压纳入标准化数字流程，降低漏筛率、提升公卫考核达标率；
+                数据自动归档并可追溯，减轻基层医护工作负担，为慢病管理与医保监管提供真实、可信的数据支撑。
               </p>
             </div>
           </div>

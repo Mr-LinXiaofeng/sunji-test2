@@ -23,7 +23,7 @@ export function ScenarioSection() {
     <section className="py-16">
       <div className="container mx-auto px-4">
         <div className="text-center mb-8 sm:mb-12">
-          <h2 className="text-2xl sm:text-3xl font-bold text-foreground">商捷合作伙伴解决方案</h2>
+          <h2 className="text-2xl sm:text-3xl font-bold text-foreground">合作伙伴解决方案</h2>
           <p className="mt-2 text-muted-foreground text-sm sm:text-lg">
             汇集合作伙伴智慧场景与解决方案，欢迎选择感兴趣的内容点击查看
           </p>
